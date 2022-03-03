@@ -113,7 +113,7 @@ public class ApplicationDAOimpl implements ApplicationDAO {
             return Optional.ofNullable(application);
         } catch (SQLException e) {
             logger.error("Error find by ID");
-            throw new RuntimeException(e);
+            throw new DaoException(e);
         }
     }
 
@@ -150,7 +150,7 @@ public class ApplicationDAOimpl implements ApplicationDAO {
             return applications;
         } catch (SQLException e) {
             logger.error("Failed to create list of pending applications");
-            throw new RuntimeException(e);
+            throw new DaoException(e);
         }
     }
 
@@ -163,7 +163,7 @@ public class ApplicationDAOimpl implements ApplicationDAO {
             logger.info("Application processed");
         } catch (SQLException e) {
             logger.error("Invalid process application");
-            throw new RuntimeException(e);
+            throw new DaoException(e);
         }
 
     }
@@ -180,7 +180,7 @@ public class ApplicationDAOimpl implements ApplicationDAO {
             logger.info("Status set successfully");
         } catch (SQLException e) {
             logger.error("Can't get status of application");
-            throw new RuntimeException(e);
+            throw new DaoException(e);
         }
     }
 
@@ -193,7 +193,7 @@ public class ApplicationDAOimpl implements ApplicationDAO {
             logger.info("Application deleted");
         } catch (SQLException e) {
             logger.error("Application deletion error");
-            throw new RuntimeException(e);
+            throw new DaoException(e);
         }
     }
 }
