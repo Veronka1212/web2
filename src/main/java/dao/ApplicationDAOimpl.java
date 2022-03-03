@@ -46,7 +46,7 @@ public class ApplicationDAOimpl implements ApplicationDAO {
             return applications;
         } catch (SQLException e) {
             logger.error("Error creating list of all orders");
-            throw new RuntimeException(e);
+            throw new DaoException(e);
 
         }
     }
