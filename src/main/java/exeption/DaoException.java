@@ -7,6 +7,6 @@ public class DaoException extends RuntimeException{
     private final Object error;
 
     public String getMessage() {
-        return "Such user already exists";
+        return "DAO Exception!";
     }
 }

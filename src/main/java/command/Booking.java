@@ -3,12 +3,14 @@ package command;
 import dao.ApplicationDAOimpl;
 import dto.CreateApplicationDTO;
 import dto.UserDTO;
+import exeption.CommandException;
 import exeption.ValidationException;
 import lombok.SneakyThrows;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import service.ApplicationService;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -21,7 +23,6 @@ public class Booking implements ICommand {
 
     private static final Logger logger = LogManager.getLogger(ApplicationDAOimpl.class);
 
-    @SneakyThrows
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         ApplicationService applicationService = new ApplicationService();
@@ -37,12 +38,24 @@ public class Booking implements ICommand {
                 .build();
         try {
             applicationService.create(applicationDTO);
-            req.getRequestDispatcher(SUCCESSFUL_PAGE).forward(req, resp);
+            getRequestDispatcher(SUCCESSFUL_PAGE, req, resp);
             logger.info("Booking done");
         } catch (ValidationException e) {
             logger.error("Validation Exception in Booking command");
             req.setAttribute(ERRORS, e.getErrors());
-            req.getRequestDispatcher(APPLICATION_PAGE).forward(req, resp);
+            getRequestDispatcher(APPLICATION_PAGE, req, resp);
+        }
+    }
+
+    private void getRequestDispatcher(String page, HttpServletRequest req, HttpServletResponse resp) {
+        try {
+            req.getRequestDispatcher(page).forward(req, resp);
+        } catch (ServletException e) {
+            logger.error("ServletException in booking command");
+            throw new CommandException(e);
+        } catch (IOException e) {
+            logger.error("IOException in booking command");
+            throw new CommandException(e);
         }
     }
 }

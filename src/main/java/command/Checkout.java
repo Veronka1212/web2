@@ -1,10 +1,9 @@
 package command;
 
-import controllers.ConstantsJSP;
 import dao.ApplicationDAOimpl;
 import dto.CreateCheckoutDTO;
+import exeption.CommandException;
 import lombok.NoArgsConstructor;
-import lombok.SneakyThrows;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import service.CheckoutService;
@@ -21,9 +20,8 @@ public class Checkout implements ICommand {
 
     private static final Logger logger = LogManager.getLogger(ApplicationDAOimpl.class);
 
-    @SneakyThrows
     @Override
-    public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    public void execute(HttpServletRequest req, HttpServletResponse resp) {
         final CheckoutService checkoutService = new CheckoutService();
         final RoomService roomService = new RoomService();
         if (req.getMethod().equals(GET)) {
@@ -34,15 +32,23 @@ public class Checkout implements ICommand {
                     .build();
             checkoutService.create(createCheckoutDTO);
             logger.info("Checkout created");
-            resp.sendRedirect("/hotel/login?command=login");
+            sendRedirect(CLIENT_PATH, resp);
         } else {
             Integer id = Integer.valueOf(req.getParameter(ID));
             Integer room = Integer.valueOf(req.getParameter(ROOM));
             roomService.setFree(room);
             checkoutService.delete(id);
             logger.info("Checkout approved and deleted");
-            resp.sendRedirect("/hotel/admin?command=admin");
+            sendRedirect(ADMIN_PATH, resp);
+        }
+    }
 
+    private void sendRedirect(String path, HttpServletResponse resp) {
+        try {
+            resp.sendRedirect(path);
+        } catch (IOException e) {
+            logger.error("IOException in checkout command");
+            throw new CommandException(e);
         }
     }
 }

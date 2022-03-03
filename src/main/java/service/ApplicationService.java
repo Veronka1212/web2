@@ -5,6 +5,7 @@ import dto.ApplicationDTO;
 import dto.CreateApplicationDTO;
 import entity.Application;
 import exeption.DaoException;
+import exeption.ServiceException;
 import exeption.ValidationException;
 import lombok.NoArgsConstructor;
 import mapper.ApplicationMapper;
@@ -64,7 +65,7 @@ public class ApplicationService {
             return application.getId();
         } catch (DaoException e) {
             logger.error("Application save error");
-            throw new RuntimeException(e);
+            throw new ServiceException(e);
         }
     }
 

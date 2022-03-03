@@ -4,6 +4,7 @@ import dao.ApplicationDAOimpl;
 import dao.CheckoutDAOimpl;
 import dto.UserDTO;
 import entity.user.Role;
+import exeption.CommandException;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 import org.apache.logging.log4j.LogManager;
@@ -75,10 +76,10 @@ public class Login implements ICommand {
             logger.info("Admin login");
         } catch (ServletException e) {
             logger.error("Servlet exception in admin login command");
-            e.printStackTrace();
+            throw new CommandException(e);
         } catch (IOException e) {
             logger.error("IOException in admin login command");
-            e.printStackTrace();
+            throw new CommandException(e);
         }
     }
 }

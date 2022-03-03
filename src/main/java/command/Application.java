@@ -3,6 +3,7 @@ package command;
 import dao.ApplicationDAOimpl;
 import entity.room.Bed;
 import entity.room.Type;
+import exeption.CommandException;
 import lombok.SneakyThrows;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,11 +27,11 @@ public class Application implements ICommand {
         try {
             req.getRequestDispatcher(APPLICATION_PAGE).forward(req, resp);
         } catch (ServletException e) {
-            logger.error("ServletException");
-            e.printStackTrace();
+            logger.error("ServletException in application command");
+            throw new CommandException(e);
         } catch (IOException e) {
-            logger.error("IOException");
-            e.printStackTrace();
+            logger.error("IOException in application command");
+            throw new CommandException(e);
         }
     }
 }

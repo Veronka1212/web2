@@ -31,6 +31,8 @@ public class ConstantsCommand {
     public static final String PROFILE = "/profile";
     public static final String BILLS = "/bills";
     public static final String PROFILE_PATH = "/hotel/profile?command=profile&email=";
+    public static final String ADMIN_PATH = "/hotel/admin?command=admin";
+    public static final String CLIENT_PATH = "/hotel/login?command=login";
     public static final String PROFILE_APP = "/hotel/profile";
     public static final String BILLS_PATH = "/hotel/bills";
     public static final String USER_BILLS = "bills";
