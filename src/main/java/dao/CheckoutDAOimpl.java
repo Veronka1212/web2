@@ -50,9 +50,10 @@ public class CheckoutDAOimpl implements CheckoutDAO {
 
     @Override
     public List<Checkout> findAll() {
+        ResultSet resultSet = null;
         try (Connection connection = BasicConnectionPool.connectPool().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL)) {
-            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet = preparedStatement.executeQuery();
             List<Checkout> checkouts = new ArrayList<>();
             while (resultSet.next()) {
                 checkouts.add(createCheckout(resultSet));
@@ -62,6 +63,14 @@ public class CheckoutDAOimpl implements CheckoutDAO {
         } catch (SQLException e) {
             logger.error("Checkout list creation error");
             throw new RuntimeException(e);
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+            } catch (SQLException e) {
+                throw new DaoException(e);
+            }
         }
     }
 

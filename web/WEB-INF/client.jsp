@@ -54,8 +54,7 @@
                         </tr>
                     </table>
                 </td>
-                <td style="width: 30%; padding: 5px; color: #5a6d61;
-">
+                <td style="width: 30%; padding: 5px; color: #5a6d61;">
                     <c:choose>
                         <c:when test="${myRoom.cleaning == false}">
                             <form action="${pageContext.request.contextPath}/checkout" method="get">

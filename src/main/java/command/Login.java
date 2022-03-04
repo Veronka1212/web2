@@ -67,7 +67,6 @@ public class Login implements ICommand {
         }
     }
 
-
     public static void returnToAdminPage(HttpServletRequest req, HttpServletResponse resp, ApplicationService applicationService, CheckoutDAOimpl checkoutDAOimpl) {
         req.setAttribute("checkouts", checkoutDAOimpl.findAll());
         req.setAttribute(APPLICATIONS, applicationService.findAllPending());

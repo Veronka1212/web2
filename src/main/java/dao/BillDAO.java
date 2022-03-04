@@ -20,7 +20,7 @@ public interface BillDAO {
 
     void delete(Integer id);
 
-    boolean isPaied(Integer id);
+    boolean isPaid(Integer id);
 
     public Integer getRoomNumber(Integer id);
 }

@@ -36,8 +36,8 @@ public class ApplicationDAOimpl implements ApplicationDAO {
     @Override
     public List<Application> findAll() {
         try (Connection connection = BasicConnectionPool.connectPool().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL)) {
-            ResultSet resultSet = preparedStatement.executeQuery();
+             PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
             List<Application> applications = new ArrayList<>();
             while (resultSet.next()) {
                 applications.add(createApplication(resultSet));
@@ -47,7 +47,6 @@ public class ApplicationDAOimpl implements ApplicationDAO {
         } catch (SQLException e) {
             logger.error("Error creating list of all orders");
             throw new DaoException(e);
-
         }
     }
 
@@ -78,11 +77,12 @@ public class ApplicationDAOimpl implements ApplicationDAO {
 
     @Override
     public List<Application> findByEmail(String email) {
+        ResultSet resultSet = null;
         List<Application> applications = new ArrayList<>();
         Application application;
         try (Connection connection = BasicConnectionPool.connectPool().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL)) {
-            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 application = createApplication(resultSet);
                 if (application.getEmail().equals(email)) {
@@ -94,6 +94,14 @@ public class ApplicationDAOimpl implements ApplicationDAO {
         } catch (SQLException e) {
             logger.error("Error find by email");
             throw new DaoException(e);
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+            } catch (SQLException e) {
+                throw new DaoException(e);
+            }
         }
     }
 
@@ -101,8 +109,8 @@ public class ApplicationDAOimpl implements ApplicationDAO {
     public Optional<Application> findById(String id) {
         Application application = Application.builder().build();
         try (Connection connection = BasicConnectionPool.connectPool().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL)) {
-            ResultSet resultSet = preparedStatement.executeQuery();
+             PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
                 application = createApplication(resultSet);
                 if (application.getId().equals(Integer.parseInt(id))) {
@@ -141,8 +149,8 @@ public class ApplicationDAOimpl implements ApplicationDAO {
     public List<Application> getPendingApplication() {
         List<Application> applications = new ArrayList<>();
         try (Connection connection = BasicConnectionPool.connectPool().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(PENDING_APPLICATION)) {
-            ResultSet resultSet = preparedStatement.executeQuery();
+             PreparedStatement preparedStatement = connection.prepareStatement(PENDING_APPLICATION);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
                 applications.add(createApplication(resultSet));
             }

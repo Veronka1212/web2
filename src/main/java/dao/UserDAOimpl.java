@@ -26,13 +26,13 @@ public class UserDAOimpl implements UserDAO {
 
     @Override
     public Optional<User> findByEmailAndPass(String email, String password) {
-        try (Connection connection = BasicConnectionPool.connectPool().getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(GET_BY_EMAIL_AND_PASS);
+        ResultSet resultSet = null;
+        try (Connection connection = BasicConnectionPool.connectPool().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(GET_BY_EMAIL_AND_PASS)) {
             preparedStatement.setString(1, email);
             preparedStatement.setString(2, password);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
             User user = null;
+            resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 user = User.builder()
                         .id(resultSet.getObject("id", Integer.class))
@@ -46,15 +46,23 @@ public class UserDAOimpl implements UserDAO {
         } catch (SQLException e) {
             logger.error("Invalid user find ");
             throw new DaoException(e);
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+            } catch (SQLException e) {
+                throw new DaoException(e);
+            }
         }
     }
 
     @Override
     public Optional<String> getEmail(Integer id) {
-        try (Connection connection = BasicConnectionPool.connectPool().getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(GET_BY_ID);
+        try (Connection connection = BasicConnectionPool.connectPool().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(GET_BY_ID);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
             preparedStatement.setObject(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 return Optional.ofNullable(resultSet.getObject("email", String.class));
             }
@@ -67,9 +75,9 @@ public class UserDAOimpl implements UserDAO {
     }
 
     @Override
-    public User save(User entity){
+    public User save(User entity) {
         try (Connection connection = BasicConnectionPool.connectPool().getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(SAVE_USER, Statement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(SAVE_USER, Statement.RETURN_GENERATED_KEYS)) {
             if (!findByEmailAndPass(entity.getName(), entity.getEmail()).equals(Optional.empty())) {
                 logger.error("Error e-mail or password");
                 throw new DaoException(entity);

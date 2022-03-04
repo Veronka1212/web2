@@ -31,8 +31,8 @@ public class BillDAOimpl implements BillDAO {
     public Optional<Bill> findById(Integer id) {
         Bill bill = Bill.builder().build();
         try (Connection connection = BasicConnectionPool.connectPool().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(FIND_BILL)) {
-            ResultSet resultSet = preparedStatement.executeQuery();
+             PreparedStatement preparedStatement = connection.prepareStatement(FIND_BILL);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
                 bill = create(resultSet);
                 if (bill.getId().equals(id)) {
@@ -49,11 +49,12 @@ public class BillDAOimpl implements BillDAO {
 
     @Override
     public List<Bill> findByEmail(String email) {
+        ResultSet resultSet = null;
         List<Bill> bills = new ArrayList<>();
         Bill bill;
         try (Connection connection = BasicConnectionPool.connectPool().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_BILL)) {
-            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 bill = create(resultSet);
                 if (bill.getEmail().equals(email)) {
@@ -64,16 +65,24 @@ public class BillDAOimpl implements BillDAO {
             return bills;
         } catch (SQLException e) {
             logger.error("Can't find bills by e-mail");
-            throw new RuntimeException(e);
+            throw new DaoException(e);
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+            } catch (SQLException e) {
+                throw new DaoException(e);
+            }
         }
     }
 
     @Override
-    public boolean isPaied(Integer id) {
+    public boolean isPaid(Integer id) {
         Optional<Bill> bill;
         try (Connection connection = BasicConnectionPool.connectPool().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(FIND_BILL)) {
-            ResultSet resultSet = preparedStatement.executeQuery();
+             PreparedStatement preparedStatement = connection.prepareStatement(FIND_BILL);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
                 bill = Optional.ofNullable(create(resultSet));
                 if (bill.isPresent()) {

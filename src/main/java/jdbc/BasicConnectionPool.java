@@ -19,8 +19,9 @@ public class BasicConnectionPool implements ConnectionPool {
     private static final String URL_KEY = "db.url";
     private static final String USER_NAME_KEY = "db.username";
     private static final String PASSWORD_KEY = "db.password";
-    private static final int POOL_SIZE = 20;
+    private static final int POOL_SIZE = 10;
 
+    private Connection connection;
     private static BlockingQueue<Connection> connectionPool;
     private static List<Connection> usedConnections = new ArrayList<>();
 
@@ -52,7 +53,6 @@ public class BasicConnectionPool implements ConnectionPool {
 
     @Override
     public Connection getConnection() {
-        Connection connection;
         try {
             connection = connectionPool.take();
             releaseConnection(connection);
@@ -98,5 +98,10 @@ public class BasicConnectionPool implements ConnectionPool {
 
     public int getSize() {
         return connectionPool.size() + usedConnections.size();
+    }
+
+    @Override
+    public void close() {
+        releaseConnection(connection);
     }
 }

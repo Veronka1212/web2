@@ -6,6 +6,7 @@ import entity.room.Bed;
 import entity.room.Room;
 import entity.room.Status;
 import entity.room.Type;
+import exeption.DaoException;
 import jdbc.BasicConnectionPool;
 import lombok.NoArgsConstructor;
 import org.apache.logging.log4j.LogManager;
@@ -39,9 +40,9 @@ public class RoomDAOimpl implements RoomDAO {
             "UPDATE room SET cleaning = false WHERE id=?;";
 
     public List<Room> findAllFreeById(String id) {
-        try (Connection connection = BasicConnectionPool.connectPool().getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(GET_FREE_ROOM);
-            ResultSet resultSet = preparedStatement.executeQuery();
+        try (Connection connection = BasicConnectionPool.connectPool().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(GET_FREE_ROOM);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
             ApplicationDAOimpl applicationDAOimpl = new ApplicationDAOimpl();
             Application application = Application.builder().build();
             if (applicationDAOimpl.findById(id).isPresent()) {
@@ -58,7 +59,7 @@ public class RoomDAOimpl implements RoomDAO {
             return rooms;
         } catch (SQLException e) {
             logger.error("Room search error");
-            throw new RuntimeException(e);
+            throw new DaoException(e);
         }
     }
 
@@ -86,9 +87,10 @@ public class RoomDAOimpl implements RoomDAO {
     }
 
     public List<Room> findAll() {
+        ResultSet resultSet = null;
         try (Connection connection = BasicConnectionPool.connectPool().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL)) {
-            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet = preparedStatement.executeQuery();
             List<Room> rooms = new ArrayList<>();
             while (resultSet.next()) {
                 rooms.add(create(resultSet));
@@ -97,7 +99,15 @@ public class RoomDAOimpl implements RoomDAO {
             return rooms;
         } catch (SQLException e) {
             logger.error("Room search error");
-            throw new RuntimeException(e);
+            throw new DaoException(e);
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+            } catch (SQLException e) {
+                throw new DaoException(e);
+            }
         }
     }
 
@@ -109,7 +119,7 @@ public class RoomDAOimpl implements RoomDAO {
             logger.info("Successful to set status busy");
         } catch (SQLException e) {
             logger.error("Unable to set status busy");
-            throw new RuntimeException(e);
+            throw new DaoException(e);
         }
     }
 
@@ -121,7 +131,7 @@ public class RoomDAOimpl implements RoomDAO {
             logger.info("Successful to set cleaning");
         } catch (SQLException e) {
             logger.error("Unable to set cleaning");
-            throw new RuntimeException(e);
+            throw new DaoException(e);
         }
     }
 
@@ -133,7 +143,7 @@ public class RoomDAOimpl implements RoomDAO {
             logger.info("Successful to set cleaned");
         } catch (SQLException e) {
             logger.error("Unable to set cleaned");
-            throw new RuntimeException(e);
+            throw new DaoException(e);
         }
     }
 
@@ -145,7 +155,7 @@ public class RoomDAOimpl implements RoomDAO {
             logger.info("Successful to set free");
         } catch (SQLException e) {
             logger.error("Unable to set free");
-            throw new RuntimeException(e);
+            throw new DaoException(e);
         }
     }
 }
