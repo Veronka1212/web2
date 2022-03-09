@@ -40,7 +40,7 @@ public class BillDAOimpl implements BillDAO {
                 }
             }
             logger.info("Bill fond by ID");
-            return Optional.ofNullable(bill);
+            return Optional.empty();
         } catch (SQLException e) {
             logger.error("Can't find bill by ID");
             throw new RuntimeException(e);

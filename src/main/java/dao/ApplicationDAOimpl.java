@@ -107,7 +107,7 @@ public class ApplicationDAOimpl implements ApplicationDAO {
 
     @Override
     public Optional<Application> findById(String id) {
-        Application application = Application.builder().build();
+        Application application;
         try (Connection connection = BasicConnectionPool.connectPool().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL);
              ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -118,7 +118,7 @@ public class ApplicationDAOimpl implements ApplicationDAO {
                 }
             }
             logger.info("Application fond by ID");
-            return Optional.ofNullable(application);
+            return Optional.empty();
         } catch (SQLException e) {
             logger.error("Error find by ID");
             throw new DaoException(e);
@@ -142,7 +142,6 @@ public class ApplicationDAOimpl implements ApplicationDAO {
             logger.error("It is not possible to save the order object in the database!");
             throw new DaoException(e);
         }
-
     }
 
     @Override
