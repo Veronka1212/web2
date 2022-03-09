@@ -9,6 +9,7 @@ import java.util.Objects;
 @Data
 @Getter
 @Builder
+@EqualsAndHashCode(of = "id")
 public class Application {
     private Integer id;
     private String email;
@@ -17,19 +18,6 @@ public class Application {
     private int time;
     private boolean status;
     private int processing_status;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Application that = (Application) o;
-        return id == that.id;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 
     public boolean getStatus() {
         return status;
