@@ -25,7 +25,7 @@ public class ApplicationDAOimpl implements ApplicationDAO {
     private static final String SAVE_APPLICATION =
             "INSERT INTO application (email, bed, type, time, status, processing_status) VALUES (?,?,?,?,?,?) ";
     private static final String PENDING_APPLICATION =
-            "SELECT * FROM my_hotel.application WHERE processing_status=0;";
+            "SELECT * FROM application WHERE processing_status=0;";
     private static final String UPDATE_APPLICATION =
             "UPDATE application SET processing_status='1' WHERE id=?;";
     private static final String UPDATE_STATUS =
