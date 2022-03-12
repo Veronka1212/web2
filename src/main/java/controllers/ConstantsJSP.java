@@ -11,4 +11,5 @@ public class ConstantsJSP {
     public static final String BILL_PAGE = "/WEB-INF/bills.jsp";
     public static final String SUCCESSFUL_PAGE = "/WEB-INF/successful.jsp";
     public static final String ERROR_PAGE = "/WEB-INF/error.jsp";
+    public static final String ERROR_COM = "/WEB-INF/errorCommand.jsp";
 }

@@ -23,7 +23,7 @@ public class AdminFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpSession session = httpRequest.getSession();
         UserDTO user = (UserDTO) session.getAttribute(USER);
-        if (user==null || user.getRole().equals(Role.USER)) {
+        if (user == null || user.getRole().equals(Role.USER)) {
             request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
             return;
         }
