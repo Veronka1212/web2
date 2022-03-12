@@ -18,6 +18,17 @@
             <div style="color: #c2dbcd"><fmt:message key="page.error.message"/></div>
         </h1>
     </head>
+    <c:if test="${not empty sessionScope.user}">
+        <form action="${pageContext.request.contextPath}/login" method="get">
+            <button type="submit" style="background: lightcyan"><fmt:message key="page.application.home"/></button>
+            <input type="hidden" name="command" value="login">
+        </form>
+    </c:if>
+    <c:if test="${empty sessionScope.user}">
+        <form>
+            <input style="background: lightcyan" type="button" value="<fmt:message key="page.processing.back"/>" onClick='location.href="http://localhost:8081/hotel/"'>
+        </form>
+    </c:if>
 </div>
 </html>
 

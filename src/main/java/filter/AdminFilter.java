@@ -1,6 +1,7 @@
 package filter;
 
 import command.ConstantsCommand;
+import controllers.ConstantsJSP;
 import dto.UserDTO;
 import entity.user.Role;
 import org.codehaus.plexus.component.annotations.Component;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 import static command.ConstantsCommand.*;
+import static controllers.ConstantsJSP.*;
 
 @WebFilter({PENDING, ADMIN_COM})
 public class AdminFilter implements Filter {
@@ -21,8 +23,7 @@ public class AdminFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpSession session = httpRequest.getSession();
         UserDTO user = (UserDTO) session.getAttribute(USER);
-        if (user.getRole().equals(Role.USER)) {
-            session.invalidate();
+        if (user==null || user.getRole().equals(Role.USER)) {
             request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
             return;
         }

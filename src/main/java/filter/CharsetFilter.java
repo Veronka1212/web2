@@ -12,6 +12,5 @@ public class CharsetFilter implements Filter {
         request.setCharacterEncoding(StandardCharsets.UTF_8.name());
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         chain.doFilter(request,response);
-
     }
 }

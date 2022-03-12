@@ -36,6 +36,7 @@ public class ConstantsCommand {
     public static final String REG_PATH = "/hotel/registration";
     public static final String PROFILE_APP = "/hotel/profile";
     public static final String BILLS_PATH = "/hotel/bills";
+    public static final String LOCALE_PATH = "/hotel/locale";
     public static final String USER_BILLS = "bills";
     public static final String ERRORS = "errors";
     public static final String ERRORS_DAO = "errorsDao";
@@ -50,5 +51,5 @@ public class ConstantsCommand {
     public static final String HOTEL_COM = "/hotel";
     public static final String ADMIN_COM = "/admin";
     public static final String CHECKOUT =  "/checkout";
-    public static final String ERROR_PAGE = "/WEB-INF/error.jsp";
+
 }
