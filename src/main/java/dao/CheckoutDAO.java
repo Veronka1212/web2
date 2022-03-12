@@ -5,6 +5,7 @@ import entity.Checkout;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 public interface CheckoutDAO {
     Checkout save(Checkout entity) throws SQLException;
@@ -14,4 +15,6 @@ public interface CheckoutDAO {
     List<Checkout> findAll();
 
     Checkout createCheckout(ResultSet resultSet);
+
+    Optional<Object> findById(Integer id);
 }

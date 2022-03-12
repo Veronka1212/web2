@@ -1,5 +1,6 @@
 package dao;
 
+import entity.Bill;
 import entity.Checkout;
 import exeption.DaoException;
 import jdbc.BasicConnectionPool;
@@ -10,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class CheckoutDAOimpl implements CheckoutDAO {
     private static final Logger logger = LogManager.getLogger(ApplicationDAOimpl.class);
@@ -87,6 +89,25 @@ public class CheckoutDAOimpl implements CheckoutDAO {
         } catch (SQLException e) {
             logger.error("Checkout create error");
             throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public Optional<Object> findById(Integer id) {
+        try (Connection connection = BasicConnectionPool.connectPool().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+            while (resultSet.next()) {
+                Checkout checkout = createCheckout(resultSet);
+                if (checkout.getId().equals(id)) {
+                    return Optional.of(checkout);
+                }
+            }
+            logger.info("Checkout fond by ID");
+            return Optional.empty();
+        } catch (SQLException e) {
+            logger.error("Can't find checkout by ID");
+            throw new RuntimeException(e);
         }
     }
 }

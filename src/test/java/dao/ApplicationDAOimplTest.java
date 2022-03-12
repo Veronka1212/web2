@@ -79,10 +79,10 @@ public class ApplicationDAOimplTest {
     public void delete() throws SQLException {
         try (Connection connection = BasicConnectionPool.connectPool().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SEARCH_APPLICATION)) {
-            Application application = getApplication();
+            getApplication();
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                application = applicationDAOimpl.createApplication(resultSet);
+                Application application = applicationDAOimpl.createApplication(resultSet);
                 Integer id = application.getId();
                 applicationDAOimpl.delete(id);
                 Assert.assertFalse(applicationDAOimpl.findById(id.toString()).isPresent());
