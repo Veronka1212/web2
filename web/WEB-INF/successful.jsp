@@ -17,9 +17,9 @@
     <br>
     <h1 style="color: #c2dbcd"><fmt:message key="page.successful.message2"/></h1>
     <br><br>
-    <form action="${pageContext.request.contextPath}/login" method="get">
+    <form action="${pageContext.request.contextPath}/client" method="get">
         <button type="submit" style="background: lightcyan"><fmt:message key="page.application.home"/></button>
-        <input type="hidden" name="command" value="login">
+        <input type="hidden" name="command" value="client">
     </form>
     <br>
     <form action="${pageContext.request.contextPath}/profile" method="get">

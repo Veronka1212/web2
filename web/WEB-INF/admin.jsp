@@ -59,10 +59,10 @@
                             <option><fmt:message key="page.bills.apartament"/> № ${checkouts.room}
                             </option>
                             <br>
-                            <form action="${pageContext.request.contextPath}/checkout" method="post">
+                            <form action="${pageContext.request.contextPath}/evict" method="post">
                                 <input type="hidden" name="id" value="${checkouts.id}">
                                 <input type="hidden" name="room" value="${checkouts.room}">
-                                <input type="hidden" name="command" value="checkout">
+                                <input type="hidden" name="command" value="evict">
                                 <button type="submit" style="background: lightcyan"><fmt:message
                                         key="page.admin.checkout.button"/></button>
                             </form>
@@ -73,6 +73,5 @@
         </td>
     </tr>
 </table>
-
 </body>
 </html>

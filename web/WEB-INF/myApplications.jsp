@@ -77,7 +77,7 @@
                 </c:choose>
             </td>
             <td>
-                <form action="${pageContext.request.contextPath}/application" method="post">
+                <form action="${pageContext.request.contextPath}/booking" method="post">
                     <input type="hidden" name="id" value="${application.id}">
                     <input type="hidden" name="command" value="deleteapplication">
                     <button type="submit" style="background: lightcyan"><fmt:message
@@ -89,9 +89,9 @@
     <br>
 </c:forEach>
 <br>
-<form action="${pageContext.request.contextPath}/login" method="get">
+<form action="${pageContext.request.contextPath}/client" method="get">
     <button type="submit" style="background: lightcyan"><fmt:message key="page.application.home"/></button>
-    <input type="hidden" name="command" value="login">
+    <input type="hidden" name="command" value="client">
     <input type="button" style="background: lightcyan" onclick="location.reload(); return false;"
            value="<fmt:message key="page.successful.bills"/>"/>
 </form>

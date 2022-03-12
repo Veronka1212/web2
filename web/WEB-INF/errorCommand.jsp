@@ -19,9 +19,9 @@
         </h1>
     </head>
     <c:if test="${not empty sessionScope.user}">
-        <form action="${pageContext.request.contextPath}/login" method="get">
+        <form action="${pageContext.request.contextPath}/client" method="get">
             <button type="submit" style="background: lightcyan"><fmt:message key="page.application.home"/></button>
-            <input type="hidden" name="command" value="login">
+            <input type="hidden" name="command" value="client">
         </form>
     </c:if>
     <c:if test="${empty sessionScope.user}">

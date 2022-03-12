@@ -83,8 +83,8 @@
             <button type="submit" style="background: lightcyan"><fmt:message key="page.home.myapplications"/></button>
         </a>
     </form>
-    <form action="${pageContext.request.contextPath}/bills" method="get">
-        <input type="hidden" name="command" value="profile">
+    <form action="${pageContext.request.contextPath}/profile" method="get">
+        <input type="hidden" name="command" value="bills">
         <input type="hidden" name="email" value="${application.email}">
         <button type="submit" style="background: lightcyan"><fmt:message key="page.bills.mybills"/></button>
     </form>

@@ -29,30 +29,7 @@ public class Registration implements ICommand {
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) {
-        UserService userService = new UserService();
-        if (req.getMethod().equals(GET)) {
-            getRequestDispatcher(REGISTRATION_PAGE, req, resp);
-        } else {
-            resp.setContentType(CONTENT_TYPE);
-            CreateUserDTO createUserDTO = CreateUserDTO.builder()
-                    .name(req.getParameter(NAME))
-                    .email(req.getParameter(EMAIL))
-                    .password(req.getParameter(PASSWORD))
-                    .role(Role.USER.name())
-                    .build();
-            try {
-                userService.create(createUserDTO);
-                getRequestDispatcher(INDEX_PAGE, req, resp);
-            } catch (DaoException exception) {
-                logger.error("DaoException in registration command");
-                req.setAttribute(ERRORS_DAO, exception.getMessage());
-                getRequestDispatcher(REGISTRATION_PAGE, req, resp);
-            } catch (ValidationException e) {
-                logger.error("Validation exception in registration command");
-                req.setAttribute(ERRORS, e.getErrors());
-                getRequestDispatcher(REGISTRATION_PAGE, req, resp);
-            }
-        }
+        getRequestDispatcher(REGISTRATION_PAGE, req, resp);
     }
 
     private void getRequestDispatcher(String page, HttpServletRequest req, HttpServletResponse resp) {

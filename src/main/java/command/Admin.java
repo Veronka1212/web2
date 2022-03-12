@@ -31,35 +31,31 @@ public class Admin implements ICommand {
         final RoomService roomService = new RoomService();
         final BillService billService = new BillService();
         final CheckoutDAOimpl checkoutDAOimpl = new CheckoutDAOimpl();
-        if (req.getMethod().equals("GET")) {
+        Integer id = Integer.parseInt(req.getParameter(ID));
+        String room = String.valueOf(req.getParameter(FREE_ROOM));
+        String status = req.getParameter(STATUS);
+        applicationService.adminProcessApplication(id, status);
+        Integer roomID = Integer.parseInt(getID(room));
+        if (status.equals(TRUE)) {
+            roomService.setBusy(roomID);
+        }
+        try {
+            Integer time = Integer.valueOf(req.getParameter(TIME));
+            Integer cost = Integer.valueOf(getCost(room));
+            Integer totalCost = time * cost;
+            String email = req.getParameter(EMAIL);
+            CreateBillDTO billDTO = CreateBillDTO.builder()
+                    .id(String.valueOf(id))
+                    .room(roomID.toString())
+                    .email(email)
+                    .cost(totalCost.toString())
+                    .build();
+            billService.create(billDTO);
             Login.returnToAdminPage(req, resp, applicationService, checkoutDAOimpl);
-        } else {
-            Integer id = Integer.parseInt(req.getParameter(ID));
-            String room = String.valueOf(req.getParameter(FREE_ROOM));
-            String status = req.getParameter(STATUS);
-            applicationService.adminProcessApplication(id, status);
-            Integer roomID = Integer.parseInt(getID(room));
-            if (status.equals(TRUE)) {
-                roomService.setBusy(roomID);
-            }
-            try {
-                Integer time = Integer.valueOf(req.getParameter(TIME));
-                Integer cost = Integer.valueOf(getCost(room));
-                Integer totalCost = time * cost;
-                String email = req.getParameter(EMAIL);
-                CreateBillDTO billDTO = CreateBillDTO.builder()
-                        .id(String.valueOf(id))
-                        .room(roomID.toString())
-                        .email(email)
-                        .cost(totalCost.toString())
-                        .build();
-                billService.create(billDTO);
-                Login.returnToAdminPage(req, resp, applicationService, checkoutDAOimpl);
-                logger.info("Go to admin page");
-            } catch (IllegalStateException e) {
-                logger.error("Illegal State Exception in Admin command");
-                Login.returnToAdminPage(req, resp, applicationService, checkoutDAOimpl);
-            }
+            logger.info("Go to admin page");
+        } catch (IllegalStateException e) {
+            logger.error("Illegal State Exception in Admin command");
+            Login.returnToAdminPage(req, resp, applicationService, checkoutDAOimpl);
         }
     }
 

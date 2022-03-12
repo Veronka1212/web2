@@ -16,7 +16,7 @@ text-align: center">
         <title><fmt:message key="page.admin.application"/></title>
     </head>
 
-    <form action="${pageContext.request.contextPath}/application" method="post">
+    <form action="${pageContext.request.contextPath}/booking" method="post">
         <label for="bed">
             <h3 style="color: #c2dbcd"><fmt:message key="page.application.beds"/></h3>
         </label><select name="bed" id="bed" style="background: azure">
@@ -50,9 +50,9 @@ text-align: center">
         </c:if>
         <br><br>
     </form>
-    <form action="${pageContext.request.contextPath}/login" method="get">
+    <form action="${pageContext.request.contextPath}/client" method="get">
         <button type="submit" style="background: lightcyan"><fmt:message key="page.application.home"/></button>
-        <input type="hidden" name="command" value="login">
+        <input type="hidden" name="command" value="client">
     </form>
 </div>
 </html>

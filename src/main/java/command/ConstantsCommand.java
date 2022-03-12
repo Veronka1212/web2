@@ -50,7 +50,12 @@ public class ConstantsCommand {
     public static final String BILL_PATH = "/hotel/bills?command=profile&email=";
     public static final String HOTEL_COM = "/hotel";
     public static final String ADMIN_COM = "/admin";
-    public static final String CHECKOUT =  "/checkout";
+    public static final String CHECKOUT = "/checkout";
+    public static final String CLIENT = "/client";
+    public static final String HELLO_ADMIN = "/helloadmin";
+    public static final String EVICT = "/evict";
+    public static final String CREATE_USER = "/createuser";
+    public static final String BOOKING = "/booking";
 
 
 }

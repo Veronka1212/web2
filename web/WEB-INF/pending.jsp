@@ -117,9 +117,9 @@
 <br>
 </div>
 <br><br>
-<form action="${pageContext.request.contextPath}/admin" method="get">
+<form action="${pageContext.request.contextPath}/helloadmin" method="get">
     <button type="submit" style="background: lightcyan"><fmt:message key="page.application.home"/></button>
-    <input type="hidden" name="command" value="admin">
+    <input type="hidden" name="command" value="helloadmin">
 </form>
 </body>
 </html>

@@ -55,7 +55,7 @@
         <tr>
             <td>
                 <c:if test="${bill.paymentState == false}">
-                    <form action="${pageContext.request.contextPath}/bills" method="post">
+                    <form action="${pageContext.request.contextPath}/bills" method="get">
                         <input type="hidden" name="id" value="${bill.id}">
                         <input type="hidden" name="command" value="pay">
                         <input type="hidden" name="room" value="${bill.room}">
@@ -65,7 +65,7 @@
             </td>
             <td>
                 <c:if test="${bill.paymentState == true}">
-                    <form action="${pageContext.request.contextPath}/bills" method="post">
+                    <form action="${pageContext.request.contextPath}/bills" method="get">
                         <input type="hidden" name="id" value="${bill.id}">
                         <input type="hidden" name="command" value="deletebill">
                         <button type="submit" style="background: lightcyan"><fmt:message key="page.successful.del"/></button>
@@ -77,9 +77,9 @@
     <br>
 </c:forEach>
 <br>
-<form action="${pageContext.request.contextPath}/login" method="get">
+<form action="${pageContext.request.contextPath}/client" method="get">
     <button type="submit" style="background: lightcyan"><fmt:message key="page.application.home"/></button>
-    <input type="hidden" name="command" value="login">
+    <input type="hidden" name="command" value="client">
     <input type="button" style="background: lightcyan" onclick="location.reload(); return false;" value="<fmt:message key="page.successful.bills"/>"/>
 </form>
 </body>

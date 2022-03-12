@@ -13,7 +13,11 @@ public enum CommandEnum {
     BOOKING(new Booking()),
     DELETEBILL(new DeleteBill()),
     DELETEAPPLICATION(new DeleteApplication()),
-    CHECKOUT(new Checkout());
+    CHECKOUT(new Checkout()),
+    CLIENT(new Client()),
+    EVICT(new Evict()),
+    CREATEUSER(new CreateUser()),
+    BILLS(new Bills());
 
     private ICommand command;
 

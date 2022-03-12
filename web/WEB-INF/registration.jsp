@@ -16,7 +16,7 @@
     </head>
     <body>
 
-    <form action="${pageContext.request.contextPath}/registration" method="post">
+    <form action="${pageContext.request.contextPath}/createuser" method="post">
         <label for="name">
             <div><fmt:message key="page.registration.name"/></div>
             <input type="text" name="name" id="name" required style="background: azure">
@@ -34,7 +34,7 @@
             <span style="color: fuchsia">${errorsDao}</span>
         </c:if>
         <br>
-        <input type="hidden" name="command" value="registration">
+        <input type="hidden" name="command" value="createuser">
         <button type="submit" style="background: lightcyan"><fmt:message key="page.index.reg"/></button>
         <br><br>
         <input type="button" style="background: lightcyan" onclick="location.replace('http://localhost:8081/hotel/'); return false;" value="<fmt:message key="page.processing.back"/>"/>

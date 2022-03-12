@@ -1,5 +1,6 @@
 package command;
 
+import controllers.ConstantsJSP;
 import dao.ApplicationDAOimpl;
 import dao.CheckoutDAOimpl;
 import dto.UserDTO;
@@ -31,24 +32,17 @@ public class Login implements ICommand {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) {
         final UserService userService = new UserService();
-        final RoomService roomService = new RoomService();
-        if (req.getMethod().equals(GET)) {
-            UserDTO userDTO = (UserDTO) req.getSession().getAttribute(USER);
-            req.setAttribute("myRooms", roomService.findClientRoom(userDTO.getEmail()));
-            req.getRequestDispatcher(CLIENT).forward(req, resp);
+        Optional<UserDTO> userDTO = userService
+                .login(
+                        req.getParameter(EMAIL),
+                        req.getParameter(PASSWORD)
+                );
+        if (userDTO.isPresent()) {
+            mappingByRole(userDTO.get(), req, resp);
+            logger.info("Login done");
         } else {
-            Optional<UserDTO> userDTO = userService
-                    .login(
-                            req.getParameter(EMAIL),
-                            req.getParameter(PASSWORD)
-                    );
-            if (userDTO.isPresent()) {
-                mappingByRole(userDTO.get(), req, resp);
-                logger.info("Login done");
-            } else {
-                logger.error("Invalid login!");
-                resp.sendRedirect(ERROR_MESSAGE + req.getParameter(EMAIL));
-            }
+            logger.error("Invalid login!");
+            resp.sendRedirect(ERROR_MESSAGE + req.getParameter(EMAIL));
         }
     }
 
@@ -61,7 +55,7 @@ public class Login implements ICommand {
         if (userDTO.getRole().equals(Role.USER)) {
             req.setAttribute("myRooms", roomService.findClientRoom(userDTO.getEmail()));
             logger.info("User login");
-            req.getRequestDispatcher(CLIENT).forward(req, resp);
+            req.getRequestDispatcher(ConstantsJSP.CLIENT).forward(req, resp);
         } else {
             returnToAdminPage(req, resp, applicationService, checkoutDAOimpl);
         }

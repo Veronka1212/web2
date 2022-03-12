@@ -25,20 +25,18 @@ public class Pending implements ICommand {
     public void execute(HttpServletRequest req, HttpServletResponse resp) {
         final ApplicationService applicationService = new ApplicationService();
         final RoomService roomService = new RoomService();
-        if (req.getMethod().equals(GET)) {
-            String id = req.getParameter(ID);
-            req.setAttribute(APPLICATION, applicationService.findById(id));
-            req.setAttribute(ROOMS, roomService.findAll());
-            req.setAttribute(FREE_ROOMS, roomService.findAllFreeById(id));
-            try {
-                req.getRequestDispatcher(PROCESSING_PAGE).forward(req, resp);
-            } catch (ServletException e) {
-                logger.error("Servlet exception in pending command");
-                throw new CommandException(e);
-            } catch (IOException e) {
-                logger.error("IOException in pending command");
-                throw new CommandException(e);
-            }
+        String id = req.getParameter(ID);
+        req.setAttribute(APPLICATION, applicationService.findById(id));
+        req.setAttribute(ROOMS, roomService.findAll());
+        req.setAttribute(FREE_ROOMS, roomService.findAllFreeById(id));
+        try {
+            req.getRequestDispatcher(PROCESSING_PAGE).forward(req, resp);
+        } catch (ServletException e) {
+            logger.error("Servlet exception in pending command");
+            throw new CommandException(e);
+        } catch (IOException e) {
+            logger.error("IOException in pending command");
+            throw new CommandException(e);
         }
     }
 }
