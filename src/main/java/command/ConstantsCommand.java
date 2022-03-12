@@ -33,6 +33,7 @@ public class ConstantsCommand {
     public static final String PROFILE_PATH = "/hotel/profile?command=profile&email=";
     public static final String ADMIN_PATH = "/hotel/admin?command=admin";
     public static final String CLIENT_PATH = "/hotel/login?command=login";
+    public static final String REG_PATH = "/hotel/registration";
     public static final String PROFILE_APP = "/hotel/profile";
     public static final String BILLS_PATH = "/hotel/bills";
     public static final String USER_BILLS = "bills";
@@ -49,5 +50,5 @@ public class ConstantsCommand {
     public static final String HOTEL_COM = "/hotel";
     public static final String ADMIN_COM = "/admin";
     public static final String CHECKOUT =  "/checkout";
-    public static final String CLEANING = "cleaning";
+    public static final String ERROR_PAGE = "/WEB-INF/error.jsp";
 }

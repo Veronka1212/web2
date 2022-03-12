@@ -7,6 +7,7 @@
         background: url(https://images5.alphacoders.com/891/891165.jpg);
     }
 </style>
+<fmt:setBundle basename="translations"/>
 <head>
     <title><fmt:message key="page.successful.succes"/></title>
 </head>
