@@ -3,9 +3,7 @@ package dao;
 import entity.Bill;
 import exeption.DaoException;
 import jdbc.BasicConnectionPool;
-import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import lombok.SneakyThrows;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,7 +14,7 @@ import java.util.Optional;
 
 @NoArgsConstructor
 public class BillDAOimpl implements BillDAO {
-    private static final Logger logger = LogManager.getLogger(ApplicationDAOimpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(ApplicationDAOimpl.class);
 
     private static final String SAVE_BILL =
             "INSERT INTO bill (id, room, email, cost, paymentState) VALUE (?,?,?,?,?);";
@@ -29,7 +27,7 @@ public class BillDAOimpl implements BillDAO {
 
     @Override
     public Optional<Bill> findById(Integer id) {
-        Bill bill = Bill.builder().build();
+        Bill bill;
         try (Connection connection = BasicConnectionPool.connectPool().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_BILL);
              ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -39,10 +37,10 @@ public class BillDAOimpl implements BillDAO {
                     return Optional.of(bill);
                 }
             }
-            logger.info("Bill fond by ID");
+            LOGGER.info("Bill fond by ID");
             return Optional.empty();
         } catch (SQLException e) {
-            logger.error("Can't find bill by ID");
+            LOGGER.error("Can't find bill by ID");
             throw new RuntimeException(e);
         }
     }
@@ -61,10 +59,10 @@ public class BillDAOimpl implements BillDAO {
                     bills.add(bill);
                 }
             }
-            logger.info("List of bills fond by e-mail");
+            LOGGER.info("List of bills fond by e-mail");
             return bills;
         } catch (SQLException e) {
-            logger.error("Can't find bills by e-mail");
+            LOGGER.error("Can't find bills by e-mail");
             throw new DaoException(e);
         } finally {
             try {
@@ -87,21 +85,21 @@ public class BillDAOimpl implements BillDAO {
                 bill = Optional.ofNullable(create(resultSet));
                 if (bill.isPresent()) {
                     if (bill.get().getId().equals(id) && bill.get().getPaymentState()) {
-                        logger.info("The status of bill pay is true");
+                        LOGGER.info("The status of bill pay is true");
                         return true;
                     }
                 }
             }
-            logger.info("The status of bill pay is false");
+            LOGGER.info("The status of bill pay is false");
             return false;
         } catch (SQLException e) {
-            logger.error("Unable to find status bill");
+            LOGGER.error("Unable to find status bill");
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public Bill save(Bill entity) {
+    public Integer save(Bill entity) {
         try (Connection connection = BasicConnectionPool.connectPool().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SAVE_BILL, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setObject(1, entity.getId());
@@ -110,14 +108,15 @@ public class BillDAOimpl implements BillDAO {
             preparedStatement.setObject(4, entity.getCost());
             preparedStatement.setObject(5, entity.getPaymentState());
             preparedStatement.executeUpdate();
-            logger.info("Bill successfully saved");
-            return entity;
+            LOGGER.info("Bill successfully saved");
+            return entity.getId();
         } catch (SQLException e) {
-            logger.error("Invalid save bill");
+            LOGGER.error("Invalid save bill");
             throw new DaoException(e);
         }
     }
 
+    @Override
     public Bill create(ResultSet resultSet) {
         Bill bill;
         try {
@@ -128,10 +127,10 @@ public class BillDAOimpl implements BillDAO {
                     .cost(resultSet.getObject("cost", String.class))
                     .paymentState(resultSet.getObject("paymentState", Boolean.class))
                     .build();
-            logger.info("Bill successfully created");
+            LOGGER.info("Bill successfully created");
             return bill;
         } catch (SQLException e) {
-            logger.error("Invalid create bill");
+            LOGGER.error("Invalid create bill");
             throw new DaoException(e);
         }
     }
@@ -143,9 +142,9 @@ public class BillDAOimpl implements BillDAO {
             preparedStatement.setObject(1, true);
             preparedStatement.setInt(2, id);
             preparedStatement.executeUpdate();
-            logger.info("Bill paid successfully");
+            LOGGER.info("Bill paid successfully");
         } catch (SQLException e) {
-            logger.error("Bill payment error");
+            LOGGER.error("Bill payment error");
             throw new RuntimeException(e);
         }
     }
@@ -156,13 +155,14 @@ public class BillDAOimpl implements BillDAO {
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_BILL)) {
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
-            logger.info("Bill deleted successfully");
+            LOGGER.info("Bill deleted successfully");
         } catch (SQLException e) {
-            logger.error("Bill delete error");
+            LOGGER.error("Bill delete error");
             throw new RuntimeException(e);
         }
     }
 
+    @Override
     public Integer getRoomNumber(Integer id) {
         return findById(id).get().getRoom();
     }

@@ -1,6 +1,5 @@
 package dao;
 
-import command.ConstantsCommand;
 import entity.Application;
 import entity.room.Bed;
 import entity.room.Room;
@@ -24,7 +23,7 @@ import static command.ConstantsCommand.*;
 @NoArgsConstructor
 public class RoomDAOimpl implements RoomDAO {
 
-    private static final Logger logger = LogManager.getLogger(ApplicationDAOimpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(ApplicationDAOimpl.class);
 
     private static final String GET_FREE_ROOM =
             "SELECT * FROM room WHERE status='FREE';";
@@ -55,10 +54,10 @@ public class RoomDAOimpl implements RoomDAO {
                     rooms.add(room);
                 }
             }
-            logger.info("Rooms found");
+            LOGGER.info("Rooms found");
             return rooms;
         } catch (SQLException e) {
-            logger.error("Room search error");
+            LOGGER.error("Room search error");
             throw new DaoException(e);
         }
     }
@@ -78,10 +77,10 @@ public class RoomDAOimpl implements RoomDAO {
                     price(resultSet.getObject("price", String.class)).
                     status(Status.valueOf(resultSet.getObject("status", String.class))).
                     cleaning(Boolean.valueOf(cleaning)).build();
-            logger.info("Room creation successful");
+            LOGGER.info("Room creation successful");
             return room;
         } catch (SQLException e) {
-            logger.error("Room creation error");
+            LOGGER.error("Room creation error");
             throw new RuntimeException(e);
         }
     }
@@ -95,10 +94,10 @@ public class RoomDAOimpl implements RoomDAO {
             while (resultSet.next()) {
                 rooms.add(create(resultSet));
             }
-            logger.info("Room search successful");
+            LOGGER.info("Room search successful");
             return rooms;
         } catch (SQLException e) {
-            logger.error("Room search error");
+            LOGGER.error("Room search error");
             throw new DaoException(e);
         } finally {
             try {
@@ -116,9 +115,9 @@ public class RoomDAOimpl implements RoomDAO {
              PreparedStatement preparedStatement = connection.prepareStatement(SET_BUSY)) {
             preparedStatement.setObject(1, id);
             preparedStatement.executeUpdate();
-            logger.info("Successful to set status busy");
+            LOGGER.info("Successful to set status busy");
         } catch (SQLException e) {
-            logger.error("Unable to set status busy");
+            LOGGER.error("Unable to set status busy");
             throw new DaoException(e);
         }
     }
@@ -128,9 +127,9 @@ public class RoomDAOimpl implements RoomDAO {
              PreparedStatement preparedStatement = connection.prepareStatement(SET_CLEANING)) {
             preparedStatement.setObject(1, id);
             preparedStatement.executeUpdate();
-            logger.info("Successful to set cleaning");
+            LOGGER.info("Successful to set cleaning");
         } catch (SQLException e) {
-            logger.error("Unable to set cleaning");
+            LOGGER.error("Unable to set cleaning");
             throw new DaoException(e);
         }
     }
@@ -140,9 +139,9 @@ public class RoomDAOimpl implements RoomDAO {
              PreparedStatement preparedStatement = connection.prepareStatement(SET_CLEANED)) {
             preparedStatement.setObject(1, id);
             preparedStatement.executeUpdate();
-            logger.info("Successful to set cleaned");
+            LOGGER.info("Successful to set cleaned");
         } catch (SQLException e) {
-            logger.error("Unable to set cleaned");
+            LOGGER.error("Unable to set cleaned");
             throw new DaoException(e);
         }
     }
@@ -152,9 +151,9 @@ public class RoomDAOimpl implements RoomDAO {
              PreparedStatement preparedStatement = connection.prepareStatement(SET_FREE)) {
             preparedStatement.setObject(1, id);
             preparedStatement.executeUpdate();
-            logger.info("Successful to set free");
+            LOGGER.info("Successful to set free");
         } catch (SQLException e) {
-            logger.error("Unable to set free");
+            LOGGER.error("Unable to set free");
             throw new DaoException(e);
         }
     }

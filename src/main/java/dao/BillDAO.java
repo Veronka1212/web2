@@ -8,11 +8,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BillDAO {
-    Optional<Bill> findById(Integer id);
 
     List<Bill> findByEmail(String email);
 
-    Bill save(Bill entity) throws SQLException;
+    Integer save(Bill entity) throws SQLException;
 
     Bill create(ResultSet resultSet);
 
@@ -22,5 +21,7 @@ public interface BillDAO {
 
     boolean isPaid(Integer id);
 
-    public Integer getRoomNumber(Integer id);
+    Integer getRoomNumber(Integer id);
+
+    Optional<Bill> findById(Integer id);
 }

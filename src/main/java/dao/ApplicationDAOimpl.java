@@ -19,7 +19,7 @@ import static command.ConstantsCommand.*;
 @NoArgsConstructor
 public class ApplicationDAOimpl implements ApplicationDAO {
 
-    private static final Logger logger = LogManager.getLogger(ApplicationDAOimpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(ApplicationDAOimpl.class);
 
     private static final String FIND_ALL = "SELECT * FROM application;";
     private static final String SAVE_APPLICATION =
@@ -33,6 +33,7 @@ public class ApplicationDAOimpl implements ApplicationDAO {
     private static final String DELETE =
             "DELETE FROM application WHERE id=?;";
 
+
     @Override
     public List<Application> findAll() {
         try (Connection connection = BasicConnectionPool.connectPool().getConnection();
@@ -42,10 +43,10 @@ public class ApplicationDAOimpl implements ApplicationDAO {
             while (resultSet.next()) {
                 applications.add(createApplication(resultSet));
             }
-            logger.info("Return all applications");
+            LOGGER.info("Return all applications");
             return applications;
         } catch (SQLException e) {
-            logger.error("Error creating list of all orders");
+            LOGGER.error("Error creating list of all orders");
             throw new DaoException(e);
         }
     }
@@ -67,10 +68,10 @@ public class ApplicationDAOimpl implements ApplicationDAO {
                     status(Boolean.valueOf(status)).
                     processing_status(resultSet.getObject("processing_status", Integer.class))
                     .build();
-            logger.info("Application object creation was successful");
+            LOGGER.info("Application object creation was successful");
             return application;
         } catch (SQLException e) {
-            logger.error("Error create application from data base");
+            LOGGER.error("Error create application from data base");
             throw new DaoException(e);
         }
     }
@@ -89,10 +90,10 @@ public class ApplicationDAOimpl implements ApplicationDAO {
                     applications.add(application);
                 }
             }
-            logger.info("Applications fond by email");
+            LOGGER.info("Applications fond by email");
             return applications;
         } catch (SQLException e) {
-            logger.error("Error find by email");
+            LOGGER.error("Error find by email");
             throw new DaoException(e);
         } finally {
             try {
@@ -117,16 +118,17 @@ public class ApplicationDAOimpl implements ApplicationDAO {
                     return Optional.of(application);
                 }
             }
-            logger.info("Application fond by ID");
+            LOGGER.info("Application fond by ID");
             return Optional.empty();
         } catch (SQLException e) {
-            logger.error("Error find by ID");
+            LOGGER.error("Error find by ID");
             throw new DaoException(e);
         }
     }
 
     @Override
-    public Application save(Application entity) {
+    public Integer save(Application entity) {
+        Integer id = 0;
         try (Connection connection = BasicConnectionPool.connectPool().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SAVE_APPLICATION, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setObject(1, entity.getEmail());
@@ -136,10 +138,18 @@ public class ApplicationDAOimpl implements ApplicationDAO {
             preparedStatement.setObject(5, entity.getStatus());
             preparedStatement.setObject(6, entity.getProcessing_status());
             preparedStatement.executeUpdate();
-            logger.info("Application object saved in the database");
-            return entity;
+            LOGGER.info("Application object saved in the database");
+            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    id = generatedKeys.getObject(1,Integer.class);
+                }
+                else {
+                    throw new SQLException("Creating user failed, no ID obtained.");
+                }
+                return id;
+            }
         } catch (SQLException e) {
-            logger.error("It is not possible to save the order object in the database!");
+            LOGGER.error("It is not possible to save the order object in the database!");
             throw new DaoException(e);
         }
     }
@@ -153,10 +163,10 @@ public class ApplicationDAOimpl implements ApplicationDAO {
             while (resultSet.next()) {
                 applications.add(createApplication(resultSet));
             }
-            logger.info("Application fond by ID");
+            LOGGER.info("Application fond by ID");
             return applications;
         } catch (SQLException e) {
-            logger.error("Failed to create list of pending applications");
+            LOGGER.error("Failed to create list of pending applications");
             throw new DaoException(e);
         }
     }
@@ -167,9 +177,9 @@ public class ApplicationDAOimpl implements ApplicationDAO {
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_APPLICATION)) {
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
-            logger.info("Application processed");
+            LOGGER.info("Application processed");
         } catch (SQLException e) {
-            logger.error("Invalid process application");
+            LOGGER.error("Invalid process application");
             throw new DaoException(e);
         }
 
@@ -184,9 +194,9 @@ public class ApplicationDAOimpl implements ApplicationDAO {
                 preparedStatement.setInt(2, id);
                 preparedStatement.executeUpdate();
             }
-            logger.info("Status set successfully");
+            LOGGER.info("Status set successfully");
         } catch (SQLException e) {
-            logger.error("Can't get status of application");
+            LOGGER.error("Can't get status of application");
             throw new DaoException(e);
         }
     }
@@ -197,9 +207,9 @@ public class ApplicationDAOimpl implements ApplicationDAO {
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE)) {
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
-            logger.info("Application deleted");
+            LOGGER.info("Application deleted");
         } catch (SQLException e) {
-            logger.error("Application deletion error");
+            LOGGER.error("Application deletion error");
             throw new DaoException(e);
         }
     }

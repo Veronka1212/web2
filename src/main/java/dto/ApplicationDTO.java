@@ -6,6 +6,7 @@ import lombok.*;
 
 @Getter
 @Builder
+@EqualsAndHashCode
 public class ApplicationDTO {
 
     private int id;

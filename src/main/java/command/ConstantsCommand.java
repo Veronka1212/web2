@@ -3,7 +3,6 @@ package command;
 public class ConstantsCommand {
     public static final String COMMAND = "command";
     public static final String LANGUAGE = "lang";
-    public static final String GET = "GET";
     public static final String NAME = "name";
     public static final String EMAIL = "email";
     public static final String PASSWORD = "password";
@@ -24,7 +23,6 @@ public class ConstantsCommand {
     public static final String TRUE = "true";
     public static final String TIME = "time";
     public static final String LOGIN = "/login";
-    public static final String LOGIN_PATH = "/hotel/login";
     public static final String LOGOUT = "/logout";
     public static final String LOCALE = "/locale";
     public static final String REGISTRATION = "/registration";
@@ -33,10 +31,6 @@ public class ConstantsCommand {
     public static final String PROFILE_PATH = "/hotel/profile?command=profile&email=";
     public static final String ADMIN_PATH = "/hotel/admin?command=admin";
     public static final String CLIENT_PATH = "/hotel/login?command=login";
-    public static final String REG_PATH = "/hotel/registration";
-    public static final String PROFILE_APP = "/hotel/profile";
-    public static final String BILLS_PATH = "/hotel/bills";
-    public static final String LOCALE_PATH = "/hotel/locale";
     public static final String USER_BILLS = "bills";
     public static final String ERRORS = "errors";
     public static final String ERRORS_DAO = "errorsDao";
@@ -48,7 +42,6 @@ public class ConstantsCommand {
     public static final Integer ZERO = 0;
     public static final Integer ONE = 1;
     public static final String BILL_PATH = "/hotel/bills?command=profile&email=";
-    public static final String HOTEL_COM = "/hotel";
     public static final String ADMIN_COM = "/admin";
     public static final String CHECKOUT = "/checkout";
     public static final String CLIENT = "/client";

@@ -9,14 +9,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
-import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @NoArgsConstructor
 public class UserDAOimpl implements UserDAO {
 
-    private static final Logger logger = LogManager.getLogger(ApplicationDAOimpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(ApplicationDAOimpl.class);
 
     private static final String GET_BY_EMAIL_AND_PASS =
             "SELECT * FROM my_hotel.user WHERE email=? AND password=?";
@@ -41,10 +39,10 @@ public class UserDAOimpl implements UserDAO {
                         .role(Role.valueOf(resultSet.getObject("role", String.class)))
                         .build();
             }
-            logger.info("User fond successfully");
+            LOGGER.info("User fond successfully");
             return Optional.ofNullable(user);
         } catch (SQLException e) {
-            logger.error("Invalid user find ");
+            LOGGER.error("Invalid user find ");
             throw new DaoException(e);
         } finally {
             try {
@@ -66,10 +64,10 @@ public class UserDAOimpl implements UserDAO {
             if (resultSet.next()) {
                 return Optional.ofNullable(resultSet.getObject("email", String.class));
             }
-            logger.info("E-mail fond by ID");
+            LOGGER.info("E-mail fond by ID");
             return Optional.of("");
         } catch (SQLException e) {
-            logger.error("Invalid find e-mail by ID");
+            LOGGER.error("Invalid find e-mail by ID");
             throw new DaoException(e);
         }
     }
@@ -79,7 +77,7 @@ public class UserDAOimpl implements UserDAO {
         try (Connection connection = BasicConnectionPool.connectPool().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SAVE_USER, Statement.RETURN_GENERATED_KEYS)) {
             if (!findByEmailAndPass(entity.getName(), entity.getEmail()).equals(Optional.empty())) {
-                logger.error("Error e-mail or password");
+                LOGGER.error("Error e-mail or password");
                 throw new DaoException(entity);
             }
             preparedStatement.setObject(1, entity.getName());
@@ -87,10 +85,10 @@ public class UserDAOimpl implements UserDAO {
             preparedStatement.setObject(3, entity.getPassword());
             preparedStatement.setObject(4, entity.getRole().name());
             preparedStatement.executeUpdate();
-            logger.info("User saved");
+            LOGGER.info("User saved");
             return entity;
         } catch (SQLException e) {
-            logger.error("User save error");
+            LOGGER.error("User save error");
             throw new DaoException(e);
         }
     }

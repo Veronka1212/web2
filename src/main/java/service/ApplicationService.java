@@ -15,20 +15,21 @@ import org.apache.logging.log4j.Logger;
 import validator.CreateApplicationValidation;
 import validator.Validator;
 
-import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
 @NoArgsConstructor
 public class ApplicationService {
 
-    private static final Logger logger = LogManager.getLogger(ApplicationDAOimpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(ApplicationDAOimpl.class);
 
     private final ApplicationDAOimpl applicationDAO = new ApplicationDAOimpl();
     private final CreateApplicationMapper createApplicationMapper = new CreateApplicationMapper();
     private final ApplicationMapper applicationMapper = new ApplicationMapper();
     private final CreateApplicationValidation createApplicationValidation = new CreateApplicationValidation();
+
     public List<ApplicationDTO> findAllPending() {
         return applicationDAO.getPendingApplication().stream()
                 .map(applicationMapper::getFrom)
@@ -46,30 +47,29 @@ public class ApplicationService {
                 .collect(toList());
     }
 
-    public ApplicationDTO findById(String id){
-        return applicationDAO.findById(id)
-                .map(applicationMapper::getFrom)
-                .get();
+    public Optional<ApplicationDTO> findById(String id) {
+        return applicationDAO.findById(id).map(applicationMapper::getFrom);
     }
 
-    public Integer create(CreateApplicationDTO createApplicationDTO){
+    public Integer create(CreateApplicationDTO createApplicationDTO) {
+        Integer id = 0;
         Validator validator = createApplicationValidation.resultOfValidation(createApplicationDTO);
         if (!validator.resultOfValidation()) {
-            logger.error("Validation error");
+            LOGGER.error("Validation error");
             throw new ValidationException(validator.getErrors());
         }
         Application application = createApplicationMapper.mapFrom(createApplicationDTO);
         try {
-            applicationDAO.save(application);
-            logger.info("Application saved");
-            return application.getId();
+            id = applicationDAO.save(application);
+            LOGGER.info("Application saved");
+            return id;
         } catch (DaoException e) {
-            logger.error("Application save error");
+            LOGGER.error("Application save error");
             throw new ServiceException(e);
         }
     }
 
-    public void delete(Integer id){
+    public void delete(Integer id) {
         applicationDAO.delete(id);
     }
 }

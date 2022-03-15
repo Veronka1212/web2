@@ -1,17 +1,15 @@
 package service;
 
 import dao.BillDAOimpl;
-import dao.RoomDAOimpl;
 import dto.BillDTO;
 import dto.CreateBillDTO;
 import entity.Bill;
-import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import mapper.BillMapper;
 import mapper.CreateBillMapper;
 
-import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -30,8 +28,7 @@ public class BillService {
 
     public Integer create(CreateBillDTO createBillDTO) {
         Bill bill = createBillMapper.mapFrom(createBillDTO);
-        billDAOimpl.save(bill);
-        return bill.getId();
+        return billDAOimpl.save(bill);
     }
 
     public void pay(Integer id) {
@@ -48,5 +45,8 @@ public class BillService {
                 .filter(BillDTO::getPaymentState)
                 .map(BillDTO::getRoom)
                 .collect(toList());
+    }
+    public Optional<Bill> findById (Integer id) {
+        return billDAOimpl.findById(id);
     }
 }

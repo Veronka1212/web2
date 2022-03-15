@@ -16,7 +16,7 @@ public interface ApplicationDAO {
 
     Optional<Application> findById(String id);
 
-    Application save(Application entity) throws SQLException;
+    Integer save(Application entity) throws SQLException;
 
     List<Application> getPendingApplication();
 
