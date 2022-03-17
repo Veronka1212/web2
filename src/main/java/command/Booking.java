@@ -1,6 +1,6 @@
 package command;
 
-import command.util.ErrorHelper;
+import command.util.CommandHelper;
 import dao.ApplicationDAOimpl;
 import dto.CreateApplicationDTO;
 import dto.UserDTO;
@@ -35,12 +35,12 @@ public class Booking implements ICommand {
                 .build();
         try {
             applicationService.create(applicationDTO);
-            ErrorHelper.errorRequestDispatcher(req, resp, SUCCESSFUL_PAGE, BOOKING);
+            CommandHelper.errorRequestDispatcher(req, resp, SUCCESSFUL_PAGE, BOOKING);
             LOGGER.info("Booking done");
         } catch (ValidationException e) {
             LOGGER.error("Validation Exception in Booking command");
             req.setAttribute(ERRORS, e.getErrors());
-            ErrorHelper.errorRequestDispatcher(req, resp, APPLICATION_PAGE, BOOKING);
+            CommandHelper.errorRequestDispatcher(req, resp, APPLICATION_PAGE, BOOKING);
         }
     }
 }

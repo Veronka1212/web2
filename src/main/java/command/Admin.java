@@ -1,5 +1,6 @@
 package command;
 
+import command.util.CommandHelper;
 import dao.ApplicationDAOimpl;
 import dao.CheckoutDAOimpl;
 import dto.CreateBillDTO;
@@ -48,11 +49,11 @@ public class Admin implements ICommand {
                     .cost(totalCost.toString())
                     .build();
             billService.create(billDTO);
-            Login.returnToAdminPage(req, resp, applicationService, checkoutDAOimpl);
+            CommandHelper.returnToAdminPage(req, resp, applicationService, checkoutDAOimpl);
             LOGGER.info("Go to admin page");
         } catch (IllegalStateException e) {
             LOGGER.error("Illegal State Exception in Admin command");
-            Login.returnToAdminPage(req, resp, applicationService, checkoutDAOimpl);
+            CommandHelper.returnToAdminPage(req, resp, applicationService, checkoutDAOimpl);
         }
     }
 

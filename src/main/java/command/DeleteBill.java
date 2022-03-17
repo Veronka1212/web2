@@ -1,6 +1,6 @@
 package command;
 
-import command.util.ErrorHelper;
+import command.util.CommandHelper;
 import service.BillService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +15,6 @@ public class DeleteBill implements ICommand {
         BillService billService = new BillService();
         Integer id = Integer.valueOf(req.getParameter(ID));
         billService.delete(id);
-        ErrorHelper.errorSendRedirect(BILL_PATH, "delete bill", resp);
+        CommandHelper.errorSendRedirect(BILL_PATH, "delete bill", resp);
     }
 }

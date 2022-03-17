@@ -1,6 +1,6 @@
 package command;
 
-import command.util.ErrorHelper;
+import command.util.CommandHelper;
 import dto.UserDTO;
 import service.RoomService;
 
@@ -19,6 +19,6 @@ public class Client implements ICommand {
     public void execute(HttpServletRequest req, HttpServletResponse resp) {
         UserDTO userDTO = (UserDTO) req.getSession().getAttribute(USER);
         req.setAttribute("myRooms", roomService.findClientRoom(userDTO.getEmail()));
-        ErrorHelper.errorRequestDispatcher(req, resp, CLIENT, ConstantsCommand.CLIENT);
+        CommandHelper.errorRequestDispatcher(req, resp, CLIENT, ConstantsCommand.CLIENT);
     }
 }

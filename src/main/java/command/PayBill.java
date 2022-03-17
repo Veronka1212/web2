@@ -1,6 +1,6 @@
 package command;
 
-import command.util.ErrorHelper;
+import command.util.CommandHelper;
 import service.BillService;
 import service.RoomService;
 
@@ -20,6 +20,6 @@ public class PayBill implements ICommand {
         Integer room = Integer.valueOf(req.getParameter(ROOM));
         billService.pay(id);
         roomService.setCleaned(room);
-        ErrorHelper.errorSendRedirect(BILL_PATH, "pay bill", resp);
+        CommandHelper.errorSendRedirect(BILL_PATH, "pay bill", resp);
     }
 }

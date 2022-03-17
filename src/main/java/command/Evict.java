@@ -1,8 +1,7 @@
 package command;
 
-import command.util.ErrorHelper;
+import command.util.CommandHelper;
 import dao.ApplicationDAOimpl;
-import exeption.CommandException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import service.CheckoutService;
@@ -27,6 +26,6 @@ public class Evict implements ICommand {
         roomService.setFree(room);
         checkoutService.delete(id);
         LOGGER.info("Checkout approved and deleted");
-        ErrorHelper.errorSendRedirect(ADMIN_PATH, EVICT, resp);
+        CommandHelper.errorSendRedirect(ADMIN_PATH, EVICT, resp);
     }
 }

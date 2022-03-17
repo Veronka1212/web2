@@ -1,6 +1,6 @@
 package command;
 
-import command.util.ErrorHelper;
+import command.util.CommandHelper;
 import dao.ApplicationDAOimpl;
 import dao.CheckoutDAOimpl;
 import dto.UserDTO;
@@ -38,7 +38,7 @@ public class Login implements ICommand {
             LOGGER.info("Login done");
         } else {
             LOGGER.error("Invalid login!");
-            ErrorHelper.errorSendRedirect(ERROR_MESSAGE + req.getParameter(EMAIL), "login", resp);
+            CommandHelper.errorSendRedirect(ERROR_MESSAGE + req.getParameter(EMAIL), "login", resp);
         }
     }
 
@@ -50,15 +50,9 @@ public class Login implements ICommand {
         if (userDTO.getRole().equals(Role.USER)) {
             req.setAttribute("myRooms", roomService.findClientRoom(userDTO.getEmail()));
             LOGGER.info("User login");
-            ErrorHelper.errorRequestDispatcher(req, resp, CLIENT, "user login");
+            CommandHelper.errorRequestDispatcher(req, resp, CLIENT, "user login");
         } else {
-            returnToAdminPage(req, resp, applicationService, checkoutDAOimpl);
+            CommandHelper.returnToAdminPage(req, resp, applicationService, checkoutDAOimpl);
         }
-    }
-
-    public static void returnToAdminPage(HttpServletRequest req, HttpServletResponse resp, ApplicationService applicationService, CheckoutDAOimpl checkoutDAOimpl) {
-        req.setAttribute("checkouts", checkoutDAOimpl.findAll());
-        req.setAttribute(APPLICATIONS, applicationService.findAllPending());
-        ErrorHelper.errorRequestDispatcher(req, resp, ADMIN_PAGE, "admin login");
     }
 }

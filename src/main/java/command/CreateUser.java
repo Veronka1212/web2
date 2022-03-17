@@ -1,6 +1,6 @@
 package command;
 
-import command.util.ErrorHelper;
+import command.util.CommandHelper;
 import dao.ApplicationDAOimpl;
 import dto.CreateUserDTO;
 import entity.user.Role;
@@ -33,15 +33,15 @@ public class CreateUser implements ICommand {
                 .build();
         try {
             userService.create(createUserDTO);
-            ErrorHelper.errorRequestDispatcher(req, resp, INDEX_PAGE, USER);
+            CommandHelper.errorRequestDispatcher(req, resp, INDEX_PAGE, USER);
         } catch (DaoException exception) {
             LOGGER.error("DaoException in creat new user command");
             req.setAttribute(ERRORS_DAO, exception.getMessage());
-            ErrorHelper.errorRequestDispatcher(req, resp, REGISTRATION_PAGE, USER);
+            CommandHelper.errorRequestDispatcher(req, resp, REGISTRATION_PAGE, USER);
         } catch (ValidationException e) {
             LOGGER.error("Validation exception in creat new user command");
             req.setAttribute(ERRORS, e.getErrors());
-            ErrorHelper.errorRequestDispatcher(req, resp, REGISTRATION_PAGE, USER);
+            CommandHelper.errorRequestDispatcher(req, resp, REGISTRATION_PAGE, USER);
         }
     }
 }

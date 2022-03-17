@@ -1,6 +1,6 @@
 package command;
 
-import command.util.ErrorHelper;
+import command.util.CommandHelper;
 import service.ApplicationService;
 import service.RoomService;
 
@@ -20,7 +20,7 @@ public class Pending implements ICommand {
         req.setAttribute(APPLICATION, applicationService.findById(id));
         req.setAttribute(ROOMS, roomService.findAll());
         req.setAttribute(FREE_ROOMS, roomService.findAllFreeById(id));
-        ErrorHelper.errorRequestDispatcher(req, resp, PROCESSING_PAGE, PENDING);
+        CommandHelper.errorRequestDispatcher(req, resp, PROCESSING_PAGE, PENDING);
     }
 }
 

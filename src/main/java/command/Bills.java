@@ -1,6 +1,6 @@
 package command;
 
-import command.util.ErrorHelper;
+import command.util.CommandHelper;
 import dto.UserDTO;
 import service.BillService;
 
@@ -18,6 +18,6 @@ public class Bills implements ICommand {
         UserDTO userDTO = (UserDTO) req.getSession().getAttribute(USER);
         String email = userDTO.getEmail();
         req.setAttribute(USER_BILLS, billService.findByEmail(email));
-        ErrorHelper.errorRequestDispatcher(req, resp, BILL_PAGE, BILLS);
+        CommandHelper.errorRequestDispatcher(req, resp, BILL_PAGE, BILLS);
     }
 }

@@ -1,5 +1,6 @@
 package command;
 
+import command.util.CommandHelper;
 import dao.CheckoutDAOimpl;
 import service.ApplicationService;
 
@@ -13,6 +14,6 @@ public class HelloAdmin implements ICommand {
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        Login.returnToAdminPage(req, resp, applicationService, checkoutDAOimpl);
+        CommandHelper.returnToAdminPage(req, resp, applicationService, checkoutDAOimpl);
     }
 }

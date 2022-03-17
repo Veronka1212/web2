@@ -1,6 +1,6 @@
 package command;
 
-import command.util.ErrorHelper;
+import command.util.CommandHelper;
 import dao.ApplicationDAOimpl;
 import dto.CreateCheckoutDTO;
 import lombok.NoArgsConstructor;
@@ -30,6 +30,6 @@ public class Checkout implements ICommand {
                 .build();
         checkoutService.create(createCheckoutDTO);
         LOGGER.info("Checkout created");
-        ErrorHelper.errorSendRedirect(CLIENT_PATH,"checkout",resp);
+        CommandHelper.errorSendRedirect(CLIENT_PATH,"checkout",resp);
     }
 }

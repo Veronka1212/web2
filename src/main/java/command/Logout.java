@@ -1,6 +1,6 @@
 package command;
 
-import command.util.ErrorHelper;
+import command.util.CommandHelper;
 import lombok.NoArgsConstructor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +13,6 @@ public class Logout implements ICommand {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) {
         req.getSession().invalidate();
-        ErrorHelper.errorSendRedirect(HOTEL, "logout", resp);
+        CommandHelper.errorSendRedirect(HOTEL, "logout", resp);
     }
 }

@@ -1,6 +1,6 @@
 package command;
 
-import command.util.ErrorHelper;
+import command.util.CommandHelper;
 import entity.room.Bed;
 import entity.room.Type;
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +14,6 @@ public class Application implements ICommand {
     public void execute(HttpServletRequest req, HttpServletResponse resp) {
         req.setAttribute(BEDS, Bed.values());
         req.setAttribute(TYPES, Type.values());
-        ErrorHelper.errorRequestDispatcher(req, resp, APPLICATION_PAGE, APPLICATION);
+        CommandHelper.errorRequestDispatcher(req, resp, APPLICATION_PAGE, APPLICATION);
     }
 }

@@ -1,6 +1,6 @@
 package command;
 
-import command.util.ErrorHelper;
+import command.util.CommandHelper;
 import dto.UserDTO;
 import service.ApplicationService;
 
@@ -18,6 +18,6 @@ public class Profile implements ICommand {
         UserDTO userDTO = (UserDTO) req.getSession().getAttribute(USER);
         String email = userDTO.getEmail();
         req.setAttribute(APPLICATIONS, applicationService.findByEmail(email));
-        ErrorHelper.errorRequestDispatcher(req, resp, PROFILE_PAGE, PROFILE);
+        CommandHelper.errorRequestDispatcher(req, resp, PROFILE_PAGE, PROFILE);
     }
 }

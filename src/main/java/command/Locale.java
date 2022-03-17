@@ -1,6 +1,6 @@
 package command;
 
-import command.util.ErrorHelper;
+import command.util.CommandHelper;
 import dao.ApplicationDAOimpl;
 import dto.UserDTO;
 import entity.user.Role;
@@ -23,11 +23,11 @@ public class Locale implements ICommand {
         String page = req.getHeader("referer").replaceFirst("http://localhost:8081", "");
         try {
             UserDTO user = (UserDTO) req.getSession().getAttribute(USER);
-            ErrorHelper.errorSendRedirect(sendPage(user, page), LOCALE, resp);
+            CommandHelper.errorSendRedirect(sendPage(user, page), LOCALE, resp);
             LOGGER.info("Locale changed successful");
         } catch (NullPointerException e) {
             LOGGER.error("No session, locale changed");
-            ErrorHelper.errorSendRedirect(page, LOCALE, resp);
+            CommandHelper.errorSendRedirect(page, LOCALE, resp);
         }
     }
 

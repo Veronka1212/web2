@@ -1,16 +1,21 @@
 package command.util;
 
 import dao.ApplicationDAOimpl;
+import dao.CheckoutDAOimpl;
 import exeption.CommandException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import service.ApplicationService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class ErrorHelper {
+import static command.ConstantsCommand.APPLICATIONS;
+import static controllers.ConstantsJSP.ADMIN_PAGE;
+
+public class CommandHelper {
 
     private static final Logger LOGGER = LogManager.getLogger(ApplicationDAOimpl.class);
 
@@ -33,5 +38,11 @@ public class ErrorHelper {
             LOGGER.error("IOException in " + command + " command");
             throw new CommandException(e);
         }
+    }
+
+    public static void returnToAdminPage(HttpServletRequest req, HttpServletResponse resp, ApplicationService applicationService, CheckoutDAOimpl checkoutDAOimpl) {
+        req.setAttribute("checkouts", checkoutDAOimpl.findAll());
+        req.setAttribute(APPLICATIONS, applicationService.findAllPending());
+        CommandHelper.errorRequestDispatcher(req, resp, ADMIN_PAGE, "admin login");
     }
 }
