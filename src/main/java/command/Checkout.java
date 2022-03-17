@@ -1,8 +1,8 @@
 package command;
 
+import command.util.ErrorHelper;
 import dao.ApplicationDAOimpl;
 import dto.CreateCheckoutDTO;
-import exeption.CommandException;
 import lombok.NoArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,14 +11,13 @@ import service.RoomService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 import static command.ConstantsCommand.*;
 
 @NoArgsConstructor
 public class Checkout implements ICommand {
 
-    private static final Logger logger = LogManager.getLogger(ApplicationDAOimpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(ApplicationDAOimpl.class);
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) {
@@ -30,17 +29,7 @@ public class Checkout implements ICommand {
                 .room(room.toString())
                 .build();
         checkoutService.create(createCheckoutDTO);
-        logger.info("Checkout created");
-        sendRedirect(CLIENT_PATH, resp);
-    }
-
-
-    private void sendRedirect(String path, HttpServletResponse resp) {
-        try {
-            resp.sendRedirect(path);
-        } catch (IOException e) {
-            logger.error("IOException in checkout command");
-            throw new CommandException(e);
-        }
+        LOGGER.info("Checkout created");
+        ErrorHelper.errorSendRedirect(CLIENT_PATH,"checkout",resp);
     }
 }

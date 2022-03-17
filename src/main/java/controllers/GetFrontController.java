@@ -10,7 +10,7 @@ import java.io.IOException;
 
 import static command.ConstantsCommand.*;
 
-@WebServlet(urlPatterns = {BILLS,REGISTRATION, PENDING, CLIENT, PROFILE, APPLICATION_COM, CHECKOUT, HELLO_ADMIN})
+@WebServlet(urlPatterns = {BILLS, REGISTRATION, PENDING, CLIENT, PROFILE, APPLICATION_COM, CHECKOUT, HELLO_ADMIN})
 public class GetFrontController extends AbstractFrontController {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

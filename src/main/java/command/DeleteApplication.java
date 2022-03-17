@@ -13,7 +13,7 @@ import static command.ConstantsCommand.*;
 
 public class DeleteApplication implements ICommand {
 
-    private static final Logger logger = LogManager.getLogger(ApplicationDAOimpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(ApplicationDAOimpl.class);
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -21,7 +21,7 @@ public class DeleteApplication implements ICommand {
         String id = req.getParameter(ID);
         if (id != null) {
             applicationService.delete(Integer.parseInt(id));
-            logger.info("Application deleted");
+            LOGGER.info("Application deleted");
             resp.sendRedirect(PROFILE_PATH);
         }
     }

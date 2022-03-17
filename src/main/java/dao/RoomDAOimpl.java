@@ -17,6 +17,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static command.ConstantsCommand.*;
 
@@ -56,6 +57,26 @@ public class RoomDAOimpl implements RoomDAO {
             }
             LOGGER.info("Rooms found");
             return rooms;
+        } catch (SQLException e) {
+            LOGGER.error("Room search error");
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public Optional<Room> findRoomById(Integer id) {
+        Room room;
+        try (Connection connection = BasicConnectionPool.connectPool().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL)){
+             ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                room = create(resultSet);
+                if (id.equals(room.getId())) {
+                    return Optional.of(room);
+                }
+            }
+            LOGGER.info("Room found");
+            return Optional.empty();
         } catch (SQLException e) {
             LOGGER.error("Room search error");
             throw new DaoException(e);

@@ -1,11 +1,8 @@
 package command;
 
-import controllers.ConstantsJSP;
 import dao.ApplicationDAOimpl;
 import dao.CheckoutDAOimpl;
 import dto.CreateBillDTO;
-import lombok.SneakyThrows;
-import mapper.CreateBillMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import service.ApplicationService;
@@ -23,7 +20,7 @@ import static command.ConstantsCommand.*;
 
 public class Admin implements ICommand {
 
-    private static final Logger logger = LogManager.getLogger(ApplicationDAOimpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(ApplicationDAOimpl.class);
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) {
@@ -52,9 +49,9 @@ public class Admin implements ICommand {
                     .build();
             billService.create(billDTO);
             Login.returnToAdminPage(req, resp, applicationService, checkoutDAOimpl);
-            logger.info("Go to admin page");
+            LOGGER.info("Go to admin page");
         } catch (IllegalStateException e) {
-            logger.error("Illegal State Exception in Admin command");
+            LOGGER.error("Illegal State Exception in Admin command");
             Login.returnToAdminPage(req, resp, applicationService, checkoutDAOimpl);
         }
     }

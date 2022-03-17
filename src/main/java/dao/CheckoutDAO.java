@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CheckoutDAO {
-    Checkout save(Checkout entity) throws SQLException;
+    Integer save(Checkout entity) throws SQLException;
 
     void delete(Integer id);
 
@@ -16,5 +16,5 @@ public interface CheckoutDAO {
 
     Checkout createCheckout(ResultSet resultSet);
 
-    Optional<Object> findById(Integer id);
+    Optional<Checkout> findById(Integer id);
 }

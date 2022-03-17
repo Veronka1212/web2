@@ -1,23 +1,21 @@
 package command;
 
+import command.util.ErrorHelper;
 import dao.ApplicationDAOimpl;
 import dto.UserDTO;
 import entity.user.Role;
-import lombok.SneakyThrows;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 import static command.ConstantsCommand.*;
 
 public class Locale implements ICommand {
 
-    private static final Logger logger = LogManager.getLogger(ApplicationDAOimpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(ApplicationDAOimpl.class);
 
-    @SneakyThrows
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) {
         String lang = req.getParameter(LANGUAGE);
@@ -25,11 +23,11 @@ public class Locale implements ICommand {
         String page = req.getHeader("referer").replaceFirst("http://localhost:8081", "");
         try {
             UserDTO user = (UserDTO) req.getSession().getAttribute(USER);
-            resp.sendRedirect(sendPage(user, page));
-            logger.info("Locale changed successful");
+            ErrorHelper.errorSendRedirect(sendPage(user, page), LOCALE, resp);
+            LOGGER.info("Locale changed successful");
         } catch (NullPointerException e) {
-            logger.error("No session, locale changed");
-            resp.sendRedirect(page);
+            LOGGER.error("No session, locale changed");
+            ErrorHelper.errorSendRedirect(page, LOCALE, resp);
         }
     }
 

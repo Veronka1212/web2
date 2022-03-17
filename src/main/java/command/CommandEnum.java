@@ -17,7 +17,8 @@ public enum CommandEnum {
     CLIENT(new Client()),
     EVICT(new Evict()),
     CREATEUSER(new CreateUser()),
-    BILLS(new Bills());
+    BILLS(new Bills()),
+    HELLOADMIN(new HelloAdmin());
 
     private ICommand command;
 

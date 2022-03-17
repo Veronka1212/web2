@@ -22,13 +22,21 @@ public class CheckoutDAOimpl implements CheckoutDAO {
             "INSERT INTO checkout (room) VALUE (?);";
 
     @Override
-    public Checkout save(Checkout entity) {
+    public Integer save(Checkout entity) {
+        Integer id;
         try (Connection connection = BasicConnectionPool.connectPool().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SAVE_CHECKOUT, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setObject(1, entity.getRoom());
             preparedStatement.executeUpdate();
             LOGGER.info("Checkout saved");
-            return entity;
+            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    id = generatedKeys.getObject(1, Integer.class);
+                } else {
+                    throw new SQLException("Creating user failed, no ID obtained.");
+                }
+                return id;
+            }
         } catch (SQLException e) {
             LOGGER.error("Invalid checkout saving");
             throw new DaoException(e);
@@ -91,7 +99,7 @@ public class CheckoutDAOimpl implements CheckoutDAO {
     }
 
     @Override
-    public Optional<Object> findById(Integer id) {
+    public Optional<Checkout> findById(Integer id) {
         try (Connection connection = BasicConnectionPool.connectPool().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL);
              ResultSet resultSet = preparedStatement.executeQuery()) {

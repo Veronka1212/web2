@@ -10,6 +10,7 @@ import mapper.CreateCheckoutMapper;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -20,8 +21,7 @@ public class CheckoutService {
 
     public Integer create(CreateCheckoutDTO createCheckoutDTO) {
         Checkout checkout = createCheckoutMapper.mapFrom(createCheckoutDTO);
-        checkoutDAOimpl.save(checkout);
-        return checkout.getId();
+        return checkoutDAOimpl.save(checkout);
     }
 
     public List<CheckoutDTO> findAll() {
@@ -32,5 +32,9 @@ public class CheckoutService {
 
     public void delete(Integer id) {
         checkoutDAOimpl.delete(id);
+    }
+
+    public Optional<Checkout> findById(Integer id) {
+        return checkoutDAOimpl.findById(id);
     }
 }

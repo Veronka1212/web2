@@ -1,5 +1,6 @@
 package command;
 
+import command.util.ErrorHelper;
 import dao.ApplicationDAOimpl;
 import exeption.CommandException;
 import org.apache.logging.log4j.LogManager;
@@ -14,7 +15,7 @@ import java.io.IOException;
 import static command.ConstantsCommand.*;
 
 public class Evict implements ICommand {
-    private static final Logger logger = LogManager.getLogger(ApplicationDAOimpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(ApplicationDAOimpl.class);
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -25,16 +26,7 @@ public class Evict implements ICommand {
         Integer room = Integer.valueOf(req.getParameter(ROOM));
         roomService.setFree(room);
         checkoutService.delete(id);
-        logger.info("Checkout approved and deleted");
-        sendRedirect(ADMIN_PATH, resp);
-    }
-
-    private void sendRedirect(String path, HttpServletResponse resp) {
-        try {
-            resp.sendRedirect(path);
-        } catch (IOException e) {
-            logger.error("IOException in evict command");
-            throw new CommandException(e);
-        }
+        LOGGER.info("Checkout approved and deleted");
+        ErrorHelper.errorSendRedirect(ADMIN_PATH, EVICT, resp);
     }
 }

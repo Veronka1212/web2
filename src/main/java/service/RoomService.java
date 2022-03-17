@@ -2,12 +2,14 @@ package service;
 
 import dao.RoomDAOimpl;
 import dto.RoomDTO;
+import entity.room.Room;
 import entity.room.Status;
 import lombok.NoArgsConstructor;
 import mapper.RoomMapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -56,5 +58,9 @@ public class RoomService {
             }
         }
         return clientRooms;
+    }
+
+    public Optional<RoomDTO> findRoomById(Integer id) {
+        return roomDAOmpl.findRoomById(id).map(roomMapper::getFrom);
     }
 }
