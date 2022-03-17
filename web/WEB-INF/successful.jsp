@@ -2,6 +2,19 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
+<div style="text-align: center">
+    <fmt:setLocale
+            value="${sessionScope.lang != null ? sessionScope.lang : (param.lang != null? param.lang : 'us_US')}"/>
+    <fmt:setBundle basename="translations"/>
+    <c:if test="${not empty sessionScope.user}">
+        <div id="logout">
+            <form action="${pageContext.request.contextPath}/logout" method="post">
+                <input type="hidden" name="command" value="logout">
+                <button type="submit" style="background: lightcyan"><fmt:message key="page.header.exit"/></button>
+            </form>
+        </div>
+    </c:if>
+</div>
 <style>
     body {
         background: url(https://images5.alphacoders.com/891/891165.jpg);

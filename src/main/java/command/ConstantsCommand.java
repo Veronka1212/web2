@@ -9,6 +9,7 @@ public class ConstantsCommand {
     public static final String USER = "user";
     public static final String ROOM = "room";
     public static final String ROLE = "role";
+    public static final String BOOKING_COM = "booking";
     public static final String APPLICATIONS = "applications";
     public static final String APPLICATION = "application";
     public static final String APPLICATION_COM = "/application";
@@ -49,6 +50,7 @@ public class ConstantsCommand {
     public static final String EVICT = "/evict";
     public static final String CREATE_USER = "/createuser";
     public static final String BOOKING = "/booking";
+    public static final String BOOKING_PATH = "/hotel/booking";
 
 
 }

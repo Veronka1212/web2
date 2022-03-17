@@ -25,6 +25,11 @@
         padding: 5px; /* Поля вокруг текста */
     }
 </style>
+<c:if test="${empty requestScope.bills}">
+    <tr>
+        <td><h2 style="color: white"><fmt:message key="page.client.nobills"/></h2></td>
+    </tr>
+</c:if>
 <c:forEach var="bill" items="${requestScope.bills}">
     <table>
         <tr>
@@ -59,7 +64,8 @@
                         <input type="hidden" name="id" value="${bill.id}">
                         <input type="hidden" name="command" value="pay">
                         <input type="hidden" name="room" value="${bill.room}">
-                        <button type="submit" style="background: lightcyan"><fmt:message key="page.successful.pay"/></button>
+                        <button type="submit" style="background: lightcyan"><fmt:message
+                                key="page.successful.pay"/></button>
                     </form>
                 </c:if>
             </td>
@@ -68,7 +74,8 @@
                     <form action="${pageContext.request.contextPath}/bills" method="get">
                         <input type="hidden" name="id" value="${bill.id}">
                         <input type="hidden" name="command" value="deletebill">
-                        <button type="submit" style="background: lightcyan"><fmt:message key="page.successful.del"/></button>
+                        <button type="submit" style="background: lightcyan"><fmt:message
+                                key="page.successful.del"/></button>
                     </form>
                 </c:if>
             </td>
@@ -80,7 +87,8 @@
 <form action="${pageContext.request.contextPath}/client" method="get">
     <button type="submit" style="background: lightcyan"><fmt:message key="page.application.home"/></button>
     <input type="hidden" name="command" value="client">
-    <input type="button" style="background: lightcyan" onclick="location.reload(); return false;" value="<fmt:message key="page.successful.bills"/>"/>
+    <input type="button" style="background: lightcyan" onclick="location.reload(); return false;"
+           value="<fmt:message key="page.successful.bills"/>"/>
 </form>
 </body>
 </html>

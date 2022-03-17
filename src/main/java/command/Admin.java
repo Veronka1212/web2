@@ -30,29 +30,33 @@ public class Admin implements ICommand {
         final BillService billService = new BillService();
         final CheckoutDAOimpl checkoutDAOimpl = new CheckoutDAOimpl();
         Integer id = Integer.parseInt(req.getParameter(ID));
-        String room = String.valueOf(req.getParameter(FREE_ROOM));
         String status = req.getParameter(STATUS);
         applicationService.adminProcessApplication(id, status);
-        Integer roomID = Integer.parseInt(getID(room));
-        if (status.equals(TRUE)) {
-            roomService.setBusy(roomID);
-        }
-        try {
-            Integer time = Integer.valueOf(req.getParameter(TIME));
-            Integer cost = Integer.valueOf(getCost(room));
-            Integer totalCost = time * cost;
-            String email = req.getParameter(EMAIL);
-            CreateBillDTO billDTO = CreateBillDTO.builder()
-                    .id(String.valueOf(id))
-                    .room(roomID.toString())
-                    .email(email)
-                    .cost(totalCost.toString())
-                    .build();
-            billService.create(billDTO);
-            CommandHelper.returnToAdminPage(req, resp, applicationService, checkoutDAOimpl);
-            LOGGER.info("Go to admin page");
-        } catch (IllegalStateException e) {
-            LOGGER.error("Illegal State Exception in Admin command");
+        String room = String.valueOf(req.getParameter(FREE_ROOM));
+        if (!"null".equals(room)) {
+            Integer roomID = Integer.parseInt(getID(room));
+            if (status.equals(TRUE)) {
+                roomService.setBusy(roomID);
+            }
+            try {
+                Integer time = Integer.valueOf(req.getParameter(TIME));
+                Integer cost = Integer.valueOf(getCost(room));
+                int totalCost = time * cost;
+                String email = req.getParameter(EMAIL);
+                CreateBillDTO billDTO = CreateBillDTO.builder()
+                        .id(String.valueOf(id))
+                        .room(roomID.toString())
+                        .email(email)
+                        .cost(Integer.toString(totalCost))
+                        .build();
+                billService.create(billDTO);
+                CommandHelper.returnToAdminPage(req, resp, applicationService, checkoutDAOimpl);
+                LOGGER.info("Go to admin page");
+            } catch (IllegalStateException e) {
+                LOGGER.error("Illegal State Exception in Admin command");
+                CommandHelper.returnToAdminPage(req, resp, applicationService, checkoutDAOimpl);
+            }
+        } else {
             CommandHelper.returnToAdminPage(req, resp, applicationService, checkoutDAOimpl);
         }
     }

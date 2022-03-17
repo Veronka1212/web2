@@ -23,7 +23,8 @@ public class Locale implements ICommand {
         String page = req.getHeader("referer").replaceFirst("http://localhost:8081", "");
         try {
             UserDTO user = (UserDTO) req.getSession().getAttribute(USER);
-            CommandHelper.errorSendRedirect(sendPage(user, page), LOCALE, resp);
+            page = sendPage(user, page);
+            CommandHelper.errorSendRedirect(page, LOCALE, resp);
             LOGGER.info("Locale changed successful");
         } catch (NullPointerException e) {
             LOGGER.error("No session, locale changed");

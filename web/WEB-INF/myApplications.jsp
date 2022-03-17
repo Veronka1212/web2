@@ -26,6 +26,11 @@
         padding: 5px; /* Поля вокруг текста */
     }
 </style>
+<c:if test="${empty requestScope.applications}">
+    <tr>
+        <td><h2 style="color: white"><fmt:message key="page.client.noapplication"/></h2></td>
+    </tr>
+</c:if>
 <c:forEach var="application" items="${requestScope.applications}">
     <table>
         <tr>

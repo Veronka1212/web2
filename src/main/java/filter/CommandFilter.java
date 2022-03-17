@@ -21,7 +21,7 @@ public class CommandFilter implements Filter {
         String command = request.getParameter(COMMAND);
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String path = httpRequest.getRequestURI();
-        if (command == null && !HOTEL.equals(path)) {
+        if (command == null && !HOTEL.equals(path) && !BOOKING_PATH.equals(path)) {
             request.getRequestDispatcher(ERROR_COM).forward(request, response);
         }
         chain.doFilter(request, response);
