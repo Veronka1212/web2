@@ -21,7 +21,7 @@ public class GetFrontController extends AbstractFrontController {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         processError(request, response
-                , "method POST post is wrong for command!");
+                , "method POST is wrong for command!");
     }
 
 }

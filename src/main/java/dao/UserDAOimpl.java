@@ -34,6 +34,7 @@ public class UserDAOimpl implements UserDAO {
             if (resultSet.next()) {
                 user = User.builder()
                         .id(resultSet.getObject("id", Integer.class))
+                        .name(resultSet.getObject("name", String.class))
                         .email(resultSet.getObject("email", String.class))
                         .password(resultSet.getObject("password", String.class))
                         .role(Role.valueOf(resultSet.getObject("role", String.class)))

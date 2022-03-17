@@ -33,10 +33,10 @@ public class Locale implements ICommand {
 
     private String sendPage(UserDTO user, String page) {
         if (!page.contains(COMMAND) && user.getRole() == Role.USER) {
-            page += COMMAND_USER;
+            page = CLIENT_PATH;
         }
         if (!page.contains(COMMAND) && user.getRole() == Role.ADMIN) {
-            page += COMMAND_ADMIN;
+            page = ADMIN_PATH;
         }
         return page;
     }

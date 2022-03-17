@@ -7,8 +7,6 @@ public class ConstantsCommand {
     public static final String EMAIL = "email";
     public static final String PASSWORD = "password";
     public static final String USER = "user";
-    public static final String COMMAND_USER = "?command=login";
-    public static final String COMMAND_ADMIN = "?command=admin";
     public static final String ROOM = "room";
     public static final String APPLICATIONS = "applications";
     public static final String APPLICATION = "application";
@@ -29,8 +27,8 @@ public class ConstantsCommand {
     public static final String PROFILE = "/profile";
     public static final String BILLS = "/bills";
     public static final String PROFILE_PATH = "/hotel/profile?command=profile&email=";
-    public static final String ADMIN_PATH = "/hotel/admin?command=admin";
-    public static final String CLIENT_PATH = "/hotel/login?command=login";
+    public static final String ADMIN_PATH = "/hotel/helloadmin?command=helloadmin";
+    public static final String CLIENT_PATH = "/hotel/client?command=client";
     public static final String USER_BILLS = "bills";
     public static final String ERRORS = "errors";
     public static final String ERRORS_DAO = "errorsDao";
@@ -41,7 +39,7 @@ public class ConstantsCommand {
     public static final String TYPE = "type";
     public static final Integer ZERO = 0;
     public static final Integer ONE = 1;
-    public static final String BILL_PATH = "/hotel/bills?command=profile&email=";
+    public static final String BILL_PATH = "/hotel/profile?command=bills&email=";
     public static final String ADMIN_COM = "/admin";
     public static final String CHECKOUT = "/checkout";
     public static final String CLIENT = "/client";

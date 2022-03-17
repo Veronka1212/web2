@@ -48,6 +48,7 @@ public class Login implements ICommand {
         final CheckoutDAOimpl checkoutDAOimpl = new CheckoutDAOimpl();
         req.getSession().setAttribute(USER, userDTO);
         if (userDTO.getRole().equals(Role.USER)) {
+            req.setAttribute("name", userDTO.getName());
             req.setAttribute("myRooms", roomService.findClientRoom(userDTO.getEmail()));
             LOGGER.info("User login");
             CommandHelper.errorRequestDispatcher(req, resp, CLIENT, "user login");

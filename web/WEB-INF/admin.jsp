@@ -43,7 +43,7 @@
                         <br>
                             <input type="hidden" name="command" value="pending">
                             <input type="hidden" name="id" value="${application.id}">
-                            ${application.email} <input type="submit" name="id" value="<fmt:message key="page.processing.process"/>">
+                            ${application.email}  <button type="submit" style="background: lightcyan"><fmt:message key="page.processing.process"/></button>
                         </form>
                     </td>
                 </tr>

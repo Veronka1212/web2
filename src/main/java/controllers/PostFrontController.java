@@ -21,6 +21,6 @@ public class PostFrontController extends AbstractFrontController {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         processError(request, response
-                , "method GET post is wrong for command!");
+                , "method GET is wrong for command!");
     }
 }

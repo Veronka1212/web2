@@ -18,6 +18,7 @@ public class Client implements ICommand {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) {
         UserDTO userDTO = (UserDTO) req.getSession().getAttribute(USER);
+        req.setAttribute("name", userDTO.getName());
         req.setAttribute("myRooms", roomService.findClientRoom(userDTO.getEmail()));
         CommandHelper.errorRequestDispatcher(req, resp, CLIENT, ConstantsCommand.CLIENT);
     }

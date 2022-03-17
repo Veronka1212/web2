@@ -30,6 +30,9 @@
             padding: 5px; /* Поля вокруг текста */
         }
     </style>
+    <h2>
+        <div style="color: #c2dbcd"><fmt:message key="page.client.hello"/> ${name} </div>
+    </h2>
     <c:if test="${not empty requestScope.myRooms}">
         <h2>
             <div style="color: #c2dbcd"><fmt:message key="page.home.reception.rooms"/></div>

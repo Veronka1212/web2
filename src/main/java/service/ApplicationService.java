@@ -52,7 +52,7 @@ public class ApplicationService {
     }
 
     public Integer create(CreateApplicationDTO createApplicationDTO) {
-        Integer id = 0;
+        Integer id;
         Validator validator = createApplicationValidation.resultOfValidation(createApplicationDTO);
         if (!validator.resultOfValidation()) {
             LOGGER.error("Validation error");
