@@ -1,31 +1,18 @@
 package filter;
 
-import command.ConstantsCommand;
-import controllers.ConstantsJSP;
-import dto.UserDTO;
 import entity.user.Role;
-import org.codehaus.plexus.component.annotations.Component;
+import filter.util.FilterHelper;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
-import javax.servlet.http.HttpServletRequest;
-
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
-
 import static command.ConstantsCommand.*;
-import static controllers.ConstantsJSP.*;
+import static command.ConstantsCommand.CLIENT;
 
-@WebFilter({APPLICATION_COM, PROFILE, BILLS})
+@WebFilter({APPLICATION_COM, PROFILE, BILLS, CLIENT})
 public class ClientFilter implements Filter {
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-            throws IOException, ServletException {
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
-        HttpSession session = httpRequest.getSession();
-        UserDTO user = (UserDTO) session.getAttribute(USER);
-        if (user == null || user.getRole().equals(Role.ADMIN)) {
-            request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
-        }
-        chain.doFilter(request, response);
+
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) {
+        FilterHelper.mappingErrorPage(Role.ADMIN, FilterHelper.getUser(request),
+                request, response, chain, ClientFilter.class.getSimpleName());
     }
 }

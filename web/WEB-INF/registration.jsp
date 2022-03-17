@@ -29,6 +29,11 @@
             <div><fmt:message key="page.index.password"/></div>
             <input type="text" name="password" id="passwordId" required style="background: azure">
         </label><br><br>
+        <c:if test="${not empty requestScope.errors}">
+            <c:forEach var="error" items="${requestScope.errors}">
+                <span style="color: white">${error.message}</span>
+            </c:forEach>
+        </c:if>
         <c:if test="${not empty requestScope.errorsDao}">
             <jsp:useBean id="errorsDao" scope="request" type="java.lang.String"/>
             <span style="color: fuchsia">${errorsDao}</span>
@@ -38,14 +43,6 @@
         <button type="submit" style="background: lightcyan"><fmt:message key="page.index.reg"/></button>
         <br><br>
         <input type="button" style="background: lightcyan" onclick="location.replace('http://localhost:8081/hotel/'); return false;" value="<fmt:message key="page.processing.back"/>"/>
-        <br>
-        <c:if test="${not empty requestScope.errors}">
-            <br><br>
-            <c:forEach var="error" items="${requestScope.errors}">
-                <span style="color: fuchsia">${error.message}</span>
-                <br><br>
-            </c:forEach>
-        </c:if>
     </form>
     </body>
 </div>

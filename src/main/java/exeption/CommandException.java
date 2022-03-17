@@ -6,15 +6,6 @@ import java.io.IOException;
 public class CommandException extends RuntimeException{
     private String command;
 
-    public CommandException() {
-        super();
-    }
-
-    public CommandException(String s, String exception) {
-        super(s);
-        this.command = exception;
-    }
-
     public CommandException(ServletException e) {
     }
 

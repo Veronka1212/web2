@@ -1,7 +1,6 @@
 package controllers;
 public class ConstantsJSP {
     public static final String CLIENT = "/WEB-INF/client.jsp";
-    public static final String ERROR_MESSAGE = "/?error&email=";
     public static final String REGISTRATION_PAGE = "/WEB-INF/registration.jsp";
     public static final String APPLICATION_PAGE = "/WEB-INF/booking.jsp";
     public static final String ADMIN_PAGE = "/WEB-INF/admin.jsp";

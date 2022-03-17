@@ -14,7 +14,7 @@
       <div style="color: #c2dbcd"><fmt:message key="page.index.welcom"/></div>
     </h1>
     <br><br>
-    <c:if test="${param.error!=null}">
+    <c:if test="${param.error != null}">
       <div style="color: white">
         <span><fmt:message key="page.index.error"/></span>
       </div>

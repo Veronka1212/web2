@@ -8,6 +8,7 @@ public class ConstantsCommand {
     public static final String PASSWORD = "password";
     public static final String USER = "user";
     public static final String ROOM = "room";
+    public static final String ROLE = "role";
     public static final String APPLICATIONS = "applications";
     public static final String APPLICATION = "application";
     public static final String APPLICATION_COM = "/application";
@@ -40,6 +41,7 @@ public class ConstantsCommand {
     public static final Integer ZERO = 0;
     public static final Integer ONE = 1;
     public static final String BILL_PATH = "/hotel/profile?command=bills&email=";
+    public static final String ERROR_MESSAGE = "/hotel/?error&email=";
     public static final String ADMIN_COM = "/admin";
     public static final String CHECKOUT = "/checkout";
     public static final String CLIENT = "/client";

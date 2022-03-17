@@ -1,32 +1,17 @@
 package filter;
 
-import command.ConstantsCommand;
-import controllers.ConstantsJSP;
-import dto.UserDTO;
 import entity.user.Role;
-import org.codehaus.plexus.component.annotations.Component;
+import filter.util.FilterHelper;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
-import javax.servlet.http.HttpServletRequest;
-
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
 
 import static command.ConstantsCommand.*;
-import static controllers.ConstantsJSP.*;
 
-@WebFilter({PENDING, ADMIN_COM})
+@WebFilter({PENDING, ADMIN_COM, HELLO_ADMIN})
 public class AdminFilter implements Filter {
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-            throws IOException, ServletException {
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
-        HttpSession session = httpRequest.getSession();
-        UserDTO user = (UserDTO) session.getAttribute(USER);
-        if (user == null || user.getRole().equals(Role.USER)) {
-            request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
-            return;
-        }
-        chain.doFilter(request, response);
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) {
+        FilterHelper.mappingErrorPage(Role.USER, FilterHelper.getUser(request),
+                request, response, chain, ClientFilter.class.getSimpleName());
     }
 }
