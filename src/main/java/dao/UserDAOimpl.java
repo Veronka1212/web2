@@ -20,9 +20,9 @@ public class UserDAOimpl implements UserDAO {
     private static final String GET_BY_EMAIL_AND_PASS =
             "SELECT * FROM user WHERE email=? AND password=?";
     private static final String GET_BY_ID =
-            "SELECT * FROM user WHERE id=?";
+            "SELECT * FROM user WHERE id=?;";
     private static final String DELETE =
-            "DELETE FROM user WHERE id=?";
+            "DELETE FROM user WHERE id=?;";
     private static final String SAVE_USER =
             "INSERT INTO user (name, email, password, role) VALUES (?,?,?,?)";
 
@@ -63,14 +63,14 @@ public class UserDAOimpl implements UserDAO {
     @Override
     public Optional<String> getEmail(Integer id) {
         try (Connection connection = BasicConnectionPool.connectPool().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(GET_BY_ID);
-             ResultSet resultSet = preparedStatement.executeQuery()) {
+             PreparedStatement preparedStatement = connection.prepareStatement(GET_BY_ID)) {
             preparedStatement.setObject(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 return Optional.ofNullable(resultSet.getObject("email", String.class));
             }
             LOGGER.info("E-mail fond by ID");
-            return Optional.of("");
+            return Optional.empty();
         } catch (SQLException e) {
             LOGGER.error("Invalid find e-mail by ID");
             throw new DaoException(e);
@@ -79,7 +79,7 @@ public class UserDAOimpl implements UserDAO {
 
     @Override
     public Integer save(User entity) {
-        Integer id = null;
+        Integer id = 0;
         try (Connection connection = BasicConnectionPool.connectPool().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SAVE_USER, Statement.RETURN_GENERATED_KEYS)) {
             if (!findByEmailAndPass(entity.getName(), entity.getEmail()).equals(Optional.empty())) {
