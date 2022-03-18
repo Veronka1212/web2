@@ -7,6 +7,7 @@ import jdbc.BasicConnectionPool;
 import lombok.NoArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import util.PasswordEncryptor;
 
 import java.sql.*;
 import java.util.Optional;
@@ -28,7 +29,7 @@ public class UserDAOimpl implements UserDAO {
         try (Connection connection = BasicConnectionPool.connectPool().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(GET_BY_EMAIL_AND_PASS)) {
             preparedStatement.setString(1, email);
-            preparedStatement.setString(2, password);
+            preparedStatement.setString(2, PasswordEncryptor.encryption(password));
             User user = null;
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -83,7 +84,7 @@ public class UserDAOimpl implements UserDAO {
             }
             preparedStatement.setObject(1, entity.getName());
             preparedStatement.setObject(2, entity.getEmail());
-            preparedStatement.setObject(3, entity.getPassword());
+            preparedStatement.setObject(3, PasswordEncryptor.encryption(entity.getPassword()));
             preparedStatement.setObject(4, entity.getRole().name());
             preparedStatement.executeUpdate();
             LOGGER.info("User saved");

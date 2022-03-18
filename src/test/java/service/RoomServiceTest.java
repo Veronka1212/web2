@@ -52,7 +52,7 @@ public class RoomServiceTest {
         roomService.setCleaning(12);
         Optional<RoomDTO> room = roomService.findRoomById(12);
         room.ifPresent(dto -> Assert.assertEquals(Boolean.TRUE, dto.getCleaning()));
-        //roomService.setCleaned(12);
+        roomService.setCleaned(12);
     }
 
     @Test
