@@ -55,17 +55,13 @@ public class ApplicationDAOimpl implements ApplicationDAO {
     public Application createApplication(ResultSet resultSet) {
         Application application;
         try {
-            String status = resultSet.getObject("status", String.class);
-            if (status.equals(ONE)) {
-                status = "true";
-            }
             application = Application.builder().
                     id(resultSet.getObject("id", Integer.class)).
                     email(resultSet.getObject("email", String.class)).
                     bed(Bed.valueOf(resultSet.getObject("bed", String.class))).
                     type(Type.valueOf(resultSet.getObject("type", String.class))).
                     time(resultSet.getObject("time", Integer.class)).
-                    status(Boolean.valueOf(status)).
+                    status(resultSet.getObject("status", Boolean.class)).
                     processing_status(resultSet.getObject("processing_status", Integer.class))
                     .build();
             LOGGER.info("Application object creation was successful");
@@ -128,7 +124,7 @@ public class ApplicationDAOimpl implements ApplicationDAO {
 
     @Override
     public Integer save(Application entity) {
-        Integer id = 0;
+        Integer id;
         try (Connection connection = BasicConnectionPool.connectPool().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SAVE_APPLICATION, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setObject(1, entity.getEmail());
@@ -141,9 +137,8 @@ public class ApplicationDAOimpl implements ApplicationDAO {
             LOGGER.info("Application object saved in the database");
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    id = generatedKeys.getObject(1,Integer.class);
-                }
-                else {
+                    id = generatedKeys.getObject(1, Integer.class);
+                } else {
                     throw new SQLException("Creating user failed, no ID obtained.");
                 }
                 return id;

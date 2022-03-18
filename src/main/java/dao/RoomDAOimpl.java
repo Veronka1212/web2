@@ -67,8 +67,8 @@ public class RoomDAOimpl implements RoomDAO {
     public Optional<Room> findRoomById(Integer id) {
         Room room;
         try (Connection connection = BasicConnectionPool.connectPool().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL)){
-             ResultSet resultSet = preparedStatement.executeQuery();
+             PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 room = create(resultSet);
                 if (id.equals(room.getId())) {
@@ -84,25 +84,20 @@ public class RoomDAOimpl implements RoomDAO {
     }
 
     public Room create(ResultSet resultSet) {
-        String cleaning;
         Room room;
         try {
-            cleaning = resultSet.getObject("cleaning", String.class);
-            if (cleaning.equals(ONE)) {
-                cleaning = "true";
-            }
             room = Room.builder().
                     id(resultSet.getObject("id", Integer.class)).
                     bed(Bed.valueOf(resultSet.getObject("bed", String.class))).
                     type(Type.valueOf(resultSet.getObject("type", String.class))).
                     price(resultSet.getObject("price", String.class)).
                     status(Status.valueOf(resultSet.getObject("status", String.class))).
-                    cleaning(Boolean.valueOf(cleaning)).build();
+                    cleaning(resultSet.getObject("cleaning", Boolean.class)).build();
             LOGGER.info("Room creation successful");
             return room;
         } catch (SQLException e) {
             LOGGER.error("Room creation error");
-            throw new RuntimeException(e);
+            throw new DaoException(e);
         }
     }
 

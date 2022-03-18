@@ -57,14 +57,20 @@
             <td><strong><fmt:message key="page.bills.status"/></strong></td>
             <td>
                 <c:if test="${application.processing_status == 1}">
-                    <c:choose>
-                        <c:when test="${application.status == false}">
-                            <fmt:message key="page.processing.rejected"/>
-                        </c:when>
-                        <c:when test="${application.status == true}">
-                            <fmt:message key="page.processing.confirmed"/>
-                        </c:when>
-                    </c:choose>
+                    <%--                    <c:choose>--%>
+                    <%--                        <c:when test="${application.status == false}">--%>
+                    <%--                            <fmt:message key="page.processing.rejected"/>--%>
+                    <%--                        </c:when>--%>
+                    <%--                        <c:when test="${application.status == true}">--%>
+                    <%--                            <fmt:message key="page.processing.confirmed"/>--%>
+                    <%--                        </c:when>--%>
+                    <%--                    </c:choose>--%>
+                    <c:if test="${application.status == false}">
+                        <fmt:message key="page.processing.rejected"/>
+                    </c:if>
+                    <c:if test="${application.status == true}">
+                        <fmt:message key="page.processing.confirmed"/>
+                    </c:if>
                 </c:if>
             </td>
         </tr>

@@ -41,7 +41,7 @@ public class BillDAOimpl implements BillDAO {
             return Optional.empty();
         } catch (SQLException e) {
             LOGGER.error("Can't find bill by ID");
-            throw new RuntimeException(e);
+            throw new DaoException(e);
         }
     }
 
@@ -94,7 +94,7 @@ public class BillDAOimpl implements BillDAO {
             return false;
         } catch (SQLException e) {
             LOGGER.error("Unable to find status bill");
-            throw new RuntimeException(e);
+            throw new DaoException(e);
         }
     }
 
@@ -145,7 +145,7 @@ public class BillDAOimpl implements BillDAO {
             LOGGER.info("Bill paid successfully");
         } catch (SQLException e) {
             LOGGER.error("Bill payment error");
-            throw new RuntimeException(e);
+            throw new DaoException(e);
         }
     }
 
@@ -158,12 +158,16 @@ public class BillDAOimpl implements BillDAO {
             LOGGER.info("Bill deleted successfully");
         } catch (SQLException e) {
             LOGGER.error("Bill delete error");
-            throw new RuntimeException(e);
+            throw new DaoException(e);
         }
     }
 
     @Override
     public Integer getRoomNumber(Integer id) {
-        return findById(id).get().getRoom();
+        Optional<Bill> bill = findById(id);
+        if (bill.isPresent()) {
+            return bill.get().getRoom();
+        }
+        return 0;
     }
 }

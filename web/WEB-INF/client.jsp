@@ -68,7 +68,9 @@
                                     <fmt:message key="page.home.reception.checkout"/></button>
                             </form>
                         </c:when>
-                        <c:otherwise><fmt:message key="page.client.message"/></c:otherwise>
+                        <c:when test="${myRoom.cleaning == true}">
+                            <fmt:message key="page.client.message"/>
+                        </c:when>
                     </c:choose>
                 </td>
             </tr>
