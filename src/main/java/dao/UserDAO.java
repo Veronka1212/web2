@@ -10,6 +10,9 @@ public interface UserDAO {
 
     Optional<String> getEmail(Integer id) throws SQLException;
 
-    User save(User entity) throws SQLException;
+    Integer save(User entity) throws SQLException;
 
+    Optional<User> findById(Integer id);
+
+    void delete(Integer id);
 }

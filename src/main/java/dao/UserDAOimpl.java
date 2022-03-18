@@ -18,10 +18,13 @@ public class UserDAOimpl implements UserDAO {
     private static final Logger LOGGER = LogManager.getLogger(ApplicationDAOimpl.class);
 
     private static final String GET_BY_EMAIL_AND_PASS =
-            "SELECT * FROM my_hotel.user WHERE email=? AND password=?";
+            "SELECT * FROM user WHERE email=? AND password=?";
+    private static final String GET_BY_ID =
+            "SELECT * FROM user WHERE id=?";
+    private static final String DELETE =
+            "DELETE FROM user WHERE id=?";
     private static final String SAVE_USER =
-            "INSERT INTO my_hotel.user (name, email, password, role) VALUES (?,?,?,?)";
-    private static final String GET_BY_ID = "SELECT * FROM my_hotel.user WHERE id=?";
+            "INSERT INTO user (name, email, password, role) VALUES (?,?,?,?)";
 
     @Override
     public Optional<User> findByEmailAndPass(String email, String password) {
@@ -75,7 +78,8 @@ public class UserDAOimpl implements UserDAO {
     }
 
     @Override
-    public User save(User entity) {
+    public Integer save(User entity) {
+        Integer id = null;
         try (Connection connection = BasicConnectionPool.connectPool().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SAVE_USER, Statement.RETURN_GENERATED_KEYS)) {
             if (!findByEmailAndPass(entity.getName(), entity.getEmail()).equals(Optional.empty())) {
@@ -88,9 +92,53 @@ public class UserDAOimpl implements UserDAO {
             preparedStatement.setObject(4, entity.getRole().name());
             preparedStatement.executeUpdate();
             LOGGER.info("User saved");
-            return entity;
+            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    id = generatedKeys.getObject(1, Integer.class);
+                } else {
+                    LOGGER.error("Creating user failed, no ID obtained.");
+                }
+                return id;
+            }
         } catch (SQLException e) {
             LOGGER.error("User save error");
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public Optional<User> findById(Integer id) {
+        try (Connection connection = BasicConnectionPool.connectPool().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(GET_BY_ID)) {
+            preparedStatement.setObject(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                User user = User.builder()
+                        .id(id)
+                        .name(resultSet.getObject("name", String.class))
+                        .email(resultSet.getObject("email", String.class))
+                        .password(resultSet.getObject("password", String.class))
+                        .role(Role.valueOf(resultSet.getObject("role", String.class)))
+                        .build();
+                return Optional.of(user);
+
+            }
+            LOGGER.info("User fond by ID");
+            return Optional.empty();
+        } catch (SQLException e) {
+            LOGGER.error("Can't find user by ID");
+            throw new RuntimeException(e);
+        }
+    }
+    @Override
+    public void delete(Integer id) {
+        try (Connection connection = BasicConnectionPool.connectPool().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(DELETE)) {
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+            LOGGER.info("User deleted successfully");
+        } catch (SQLException e) {
+            LOGGER.error("User delete error");
             throw new DaoException(e);
         }
     }

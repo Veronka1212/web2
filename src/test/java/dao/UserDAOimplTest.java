@@ -17,4 +17,12 @@ public class UserDAOimplTest {
     @Test
     public void save() {
     }
+
+    @Test
+    public void findById() {
+    }
+
+    @Test
+    public void delete() {
+    }
 }

@@ -124,7 +124,7 @@ public class ApplicationDAOimpl implements ApplicationDAO {
 
     @Override
     public Integer save(Application entity) {
-        Integer id;
+        Integer id = null;
         try (Connection connection = BasicConnectionPool.connectPool().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SAVE_APPLICATION, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setObject(1, entity.getEmail());
@@ -139,7 +139,7 @@ public class ApplicationDAOimpl implements ApplicationDAO {
                 if (generatedKeys.next()) {
                     id = generatedKeys.getObject(1, Integer.class);
                 } else {
-                    throw new SQLException("Creating user failed, no ID obtained.");
+                    LOGGER.error("Creating application failed, no ID obtained.");
                 }
                 return id;
             }

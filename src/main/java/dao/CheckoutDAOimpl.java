@@ -33,7 +33,7 @@ public class CheckoutDAOimpl implements CheckoutDAO {
                 if (generatedKeys.next()) {
                     id = generatedKeys.getObject(1, Integer.class);
                 } else {
-                    throw new SQLException("Creating user failed, no ID obtained.");
+                    throw new SQLException("Creating checkout failed, no ID obtained.");
                 }
                 return id;
             }

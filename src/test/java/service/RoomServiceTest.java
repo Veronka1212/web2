@@ -17,7 +17,6 @@ import static org.junit.Assert.*;
 
 public class RoomServiceTest {
     RoomService roomService = new RoomService();
-    CreateRoomDTO roomDTO = CreateRoomDTO.builder().id("99").bed("ONE").price("100").status("FREE").cleaning("TRUE").build();
 
     @Test
     public void findAll() {
@@ -65,6 +64,6 @@ public class RoomServiceTest {
 
     @Test
     public void findClientRoom() {
-
+        Assert.assertEquals(2,roomService.findClientRoom("vasia@email.com").get(0).getId());
     }
 }
